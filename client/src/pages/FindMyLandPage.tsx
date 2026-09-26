@@ -89,12 +89,12 @@ export const FindMyLandPage: React.FC = () => {
       </div>
 
       {/* Search Form Card */}
-      <div className="soft-card p-6 space-y-4">
+      <div className="soft-card p-4 sm:p-6 space-y-4">
         {/* Search Mode Tabs */}
-        <div className="flex border-b border-[#DDE6EC] gap-2 pb-2">
+        <div className="flex flex-wrap border-b border-[#DDE6EC] gap-1.5 sm:gap-2 pb-2">
           <button
             onClick={() => setActiveTab('survey')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition cursor-pointer ${
+            className={`px-3.5 sm:px-4 py-2 text-xs font-bold rounded-lg transition cursor-pointer min-h-[40px] ${
               activeTab === 'survey'
                 ? 'bg-[#EAF3F8] text-[#123B5D]'
                 : 'text-[#667784] hover:text-[#123B5D]'
@@ -104,7 +104,7 @@ export const FindMyLandPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('qr')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition cursor-pointer ${
+            className={`px-3.5 sm:px-4 py-2 text-xs font-bold rounded-lg transition cursor-pointer min-h-[40px] ${
               activeTab === 'qr'
                 ? 'bg-[#EAF3F8] text-[#123B5D]'
                 : 'text-[#667784] hover:text-[#123B5D]'
@@ -114,7 +114,7 @@ export const FindMyLandPage: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('gps')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition cursor-pointer ${
+            className={`px-3.5 sm:px-4 py-2 text-xs font-bold rounded-lg transition cursor-pointer min-h-[40px] ${
               activeTab === 'gps'
                 ? 'bg-[#EAF3F8] text-[#123B5D]'
                 : 'text-[#667784] hover:text-[#123B5D]'
@@ -171,33 +171,33 @@ export const FindMyLandPage: React.FC = () => {
             </div>
 
             {/* Test Chips */}
-            <div className="flex flex-wrap items-center gap-2 text-xs text-[#667784] pt-1">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs text-[#667784] pt-1">
               <span className="font-semibold">{t('quickTipTitle', language)}:</span>
               <button
                 type="button"
                 onClick={() => handleChipClick('1042')}
-                className="px-2.5 py-1 bg-[#EAF3F8] hover:bg-[#DDE6EC] rounded-md font-mono font-bold text-[#123B5D] cursor-pointer"
+                className="px-2.5 py-1.5 bg-[#EAF3F8] hover:bg-[#DDE6EC] rounded-md font-mono font-bold text-[#123B5D] cursor-pointer"
               >
                 #1042 (Rampur)
               </button>
               <button
                 type="button"
                 onClick={() => handleChipClick('1043')}
-                className="px-2.5 py-1 bg-[#EAF3F8] hover:bg-[#DDE6EC] rounded-md font-mono font-bold text-[#123B5D] cursor-pointer"
+                className="px-2.5 py-1.5 bg-[#EAF3F8] hover:bg-[#DDE6EC] rounded-md font-mono font-bold text-[#123B5D] cursor-pointer"
               >
                 #1043 (Rampur)
               </button>
               <button
                 type="button"
                 onClick={() => handleChipClick('88/1')}
-                className="px-2.5 py-1 bg-[#EAF3F8] hover:bg-[#DDE6EC] rounded-md font-mono font-bold text-[#123B5D] cursor-pointer"
+                className="px-2.5 py-1.5 bg-[#EAF3F8] hover:bg-[#DDE6EC] rounded-md font-mono font-bold text-[#123B5D] cursor-pointer"
               >
                 #88/1 (Kolar Kalan)
               </button>
               <button
                 type="button"
                 onClick={() => handleChipClick('142')}
-                className="px-2.5 py-1 bg-[#EAF3F8] hover:bg-[#DDE6EC] rounded-md font-mono font-bold text-[#123B5D] cursor-pointer"
+                className="px-2.5 py-1.5 bg-[#EAF3F8] hover:bg-[#DDE6EC] rounded-md font-mono font-bold text-[#123B5D] cursor-pointer"
               >
                 #142 (Bagsevaniya)
               </button>
@@ -206,7 +206,7 @@ export const FindMyLandPage: React.FC = () => {
             <button
               onClick={() => handleSearch()}
               disabled={loading}
-              className="px-6 py-2.5 bg-[#123B5D] hover:bg-[#1B4D78] text-white text-xs font-semibold rounded-lg flex items-center space-x-2 shadow-soft cursor-pointer disabled:opacity-50"
+              className="px-6 py-2.5 bg-[#123B5D] hover:bg-[#1B4D78] text-white text-xs font-semibold rounded-lg flex items-center justify-center space-x-2 shadow-soft cursor-pointer disabled:opacity-50 min-h-[44px] w-full sm:w-auto"
             >
               <Search className="w-4 h-4 text-[#E8B84A]" />
               <span>{loading ? t('searchingLandBtn', language) : t('searchLandBtn', language)}</span>

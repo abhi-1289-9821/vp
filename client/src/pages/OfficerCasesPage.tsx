@@ -156,7 +156,7 @@ export const OfficerCasesPage: React.FC = () => {
       )}
 
       {/* Filter and Search Bar */}
-      <div className="soft-card p-5 flex flex-col sm:flex-row gap-3">
+      <div className="soft-card p-4 sm:p-5 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
         <div className="flex-1 relative">
           <input
             type="text"
@@ -181,7 +181,7 @@ export const OfficerCasesPage: React.FC = () => {
 
         <button
           onClick={() => loadCases()}
-          className="px-5 py-2.5 bg-[#123B5D] hover:bg-[#1B4D78] text-white font-semibold text-xs rounded-lg shadow-soft cursor-pointer flex items-center justify-center space-x-1.5"
+          className="px-5 py-2.5 bg-[#123B5D] hover:bg-[#1B4D78] text-white font-semibold text-xs rounded-lg shadow-soft cursor-pointer flex items-center justify-center space-x-1.5 min-h-[44px]"
         >
           <Filter className="w-3.5 h-3.5 text-[#E8B84A]" />
           <span>{t('applyFilter', language)}</span>
@@ -194,10 +194,10 @@ export const OfficerCasesPage: React.FC = () => {
           cases.map((c) => (
             <div
               key={c.id}
-              className="soft-card p-6 space-y-4 hover:border-[#123B5D] transition"
+              className="soft-card p-4 sm:p-6 space-y-4 hover:border-[#123B5D] transition"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#DDE6EC] pb-3">
-                <div className="flex items-center space-x-2.5">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="font-mono font-bold text-sm text-[#123B5D] bg-[#EAF3F8] px-2.5 py-1 rounded-md border border-[#DDE6EC]">
                     #{c.caseReference}
                   </span>
@@ -208,7 +208,7 @@ export const OfficerCasesPage: React.FC = () => {
                 <StatusBadge status={c.stage} />
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 text-xs">
                 <div>
                   <span className="text-[#667784] block text-[11px]">{t('surveyParcelLabel', language)}:</span>
                   <span className="font-bold text-[#123B5D] font-mono">#{c.parcel?.surveyNumber}</span>
@@ -227,24 +227,24 @@ export const OfficerCasesPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-[#DDE6EC] text-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-3 border-t border-[#DDE6EC] text-xs">
                 <span className="text-[#667784] text-[11px]">
                   {t('grievances', language)}: <strong className="text-[#C7972D]">{c.grievances?.length || 0}</strong> • {t('documents', language)}: <strong>{c.documents?.length || 0}</strong>
                 </span>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <button
                     onClick={() => {
                       setSelectedCaseForAdvance(c);
                       setNewStage(c.stage);
                     }}
-                    className="px-3.5 py-1.5 border border-[#DDE6EC] bg-[#F8FAFC] hover:bg-slate-100 text-[#123B5D] font-semibold text-xs rounded-lg cursor-pointer"
+                    className="px-3.5 py-2 border border-[#DDE6EC] bg-[#F8FAFC] hover:bg-slate-100 text-[#123B5D] font-semibold text-xs rounded-lg cursor-pointer min-h-[40px]"
                   >
                     {t('saveStatusUpdateBtn', language)}
                   </button>
                   <button
                     onClick={() => navigate(`/cases/${c.id}`)}
-                    className="px-3.5 py-1.5 bg-[#123B5D] hover:bg-[#1B4D78] text-white font-semibold text-xs rounded-lg flex items-center space-x-1 cursor-pointer shadow-soft"
+                    className="px-3.5 py-2 bg-[#123B5D] hover:bg-[#1B4D78] text-white font-semibold text-xs rounded-lg flex items-center space-x-1 cursor-pointer shadow-soft min-h-[40px]"
                   >
                     <span>{t('trackCaseBtn', language)}</span>
                     <ChevronRight className="w-3.5 h-3.5 text-[#E8B84A]" />

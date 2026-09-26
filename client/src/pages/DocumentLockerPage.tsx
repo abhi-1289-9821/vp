@@ -23,7 +23,7 @@ export const DocumentLockerPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="soft-card p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="soft-card p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
           <div className="flex items-center space-x-2.5">
             <div className="w-8 h-8 rounded-lg bg-[#123B5D] text-[#E8B84A] flex items-center justify-center font-bold text-xs shadow-soft">
@@ -40,7 +40,7 @@ export const DocumentLockerPage: React.FC = () => {
 
         <Link
           to="/documents/analyze"
-          className="inline-flex items-center space-x-2 px-4 py-2.5 bg-[#FFF9F0] hover:bg-[#FFF3E0] text-[#123B5D] text-xs font-semibold rounded-lg border border-[#E8B84A] transition self-start sm:self-auto cursor-pointer"
+          className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-[#FFF9F0] hover:bg-[#FFF3E0] text-[#123B5D] text-xs font-semibold rounded-lg border border-[#E8B84A] transition self-start sm:self-auto cursor-pointer min-h-[44px]"
         >
           <Sparkles className="w-4 h-4 text-[#C7972D]" />
           <span>{t('uploadNewDocBtn', language)}</span>
@@ -53,7 +53,7 @@ export const DocumentLockerPage: React.FC = () => {
           documents.map((doc) => (
             <div
               key={doc.id}
-              className="soft-card p-5 sm:p-6 flex flex-col justify-between space-y-4"
+              className="soft-card p-4 sm:p-6 flex flex-col justify-between space-y-4"
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-2">

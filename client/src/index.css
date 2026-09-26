@@ -24,12 +24,15 @@
     --font-scale: 1;
   }
 
+  html,
   body {
     font-family: 'Inter', 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Gujarati', 'Noto Sans Gurmukhi', 'Noto Sans Kannada', 'Noto Sans Malayalam', 'Noto Sans Oriya', 'Noto Sans Tamil', 'Noto Sans Telugu', 'Noto Sans Arabic', 'Noto Sans Ol Chiki', 'Noto Sans Meetei Mayek', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--sahaay-text);
     background-color: var(--sahaay-bg);
     line-height: 1.55;
     -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
   [dir="rtl"] {

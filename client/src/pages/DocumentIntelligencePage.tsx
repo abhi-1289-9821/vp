@@ -179,20 +179,20 @@ export const DocumentIntelligencePage: React.FC = () => {
       {analysisResult && extracted && (
         <div className="space-y-6">
           {/* Extracted Details Card */}
-          <div className="soft-card p-6 space-y-4">
-            <div className="flex items-center justify-between border-b border-[#DDE6EC] pb-3">
+          <div className="soft-card p-4 sm:p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#DDE6EC] pb-3">
               <div className="flex items-center space-x-2">
                 <Scale className="w-4 h-4 text-[#123B5D]" />
                 <h3 className="text-sm font-bold text-[#123B5D] uppercase tracking-wider">
                   {t('extractedInfoTitle', language)}
                 </h3>
               </div>
-              <span className="text-xs font-mono font-bold bg-[#EAF3F8] text-[#123B5D] px-2.5 py-0.5 rounded-md border border-[#DDE6EC]">
+              <span className="text-xs font-mono font-bold bg-[#EAF3F8] text-[#123B5D] px-2.5 py-0.5 rounded-md border border-[#DDE6EC] self-start sm:self-auto">
                 {t('confidenceScoreLabel', language)}: {(extracted.confidence * 100).toFixed(0)}%
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3 text-xs">
               <div className="bg-[#F8FAFC] p-3 rounded-lg border border-[#DDE6EC]">
                 <span className="text-[10px] text-[#667784] font-semibold uppercase block">{t('surveyParcelLabel', language)}</span>
                 <span className="text-sm font-bold text-[#123B5D] mt-0.5 block font-mono">
@@ -233,7 +233,7 @@ export const DocumentIntelligencePage: React.FC = () => {
             </div>
 
             {matchedParcel && (
-              <div className="bg-[#E8F4EC] border border-[#2E7D5B]/30 rounded-xl p-4 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="bg-[#E8F4EC] border border-[#2E7D5B]/30 rounded-xl p-3.5 sm:p-4 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <span className="font-bold text-[#2E7D5B] block">
                     ✓ {t('badgeCertifiedKhasra', language)}:
@@ -243,18 +243,18 @@ export const DocumentIntelligencePage: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {matchedCase && (
                     <button
                       onClick={() => navigate(`/cases/${matchedCase.id}`)}
-                      className="px-3.5 py-1.5 bg-[#123B5D] hover:bg-[#1B4D78] text-white font-semibold text-xs rounded-lg cursor-pointer"
+                      className="px-3.5 py-2 bg-[#123B5D] hover:bg-[#1B4D78] text-white font-semibold text-xs rounded-lg cursor-pointer min-h-[40px]"
                     >
                       {t('trackCaseBtn', language)} →
                     </button>
                   )}
                   <button
                     onClick={() => navigate('/map')}
-                    className="px-3.5 py-1.5 bg-white border border-[#2E7D5B]/40 text-[#2E7D5B] font-semibold text-xs rounded-lg cursor-pointer"
+                    className="px-3.5 py-2 bg-white border border-[#2E7D5B]/40 text-[#2E7D5B] font-semibold text-xs rounded-lg cursor-pointer min-h-[40px]"
                   >
                     {t('navGisMap', language)}
                   </button>

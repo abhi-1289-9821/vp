@@ -98,7 +98,7 @@ export const MyLandGISPage: React.FC = () => {
       {/* Main GIS View Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left GIS Leaflet Canvas (8 cols) */}
-        <div className="lg:col-span-8 soft-card overflow-hidden h-[540px] relative">
+        <div className="lg:col-span-8 soft-card overflow-hidden h-[380px] sm:h-[480px] lg:h-[540px] relative">
           <MapContainer
             center={centerPosition}
             zoom={15}
@@ -183,21 +183,21 @@ export const MyLandGISPage: React.FC = () => {
           </MapContainer>
 
           {/* Map Legend */}
-          <div className="absolute bottom-4 left-4 z-[1000] bg-white/95 backdrop-blur-sm border border-[#DDE6EC] p-3 rounded-lg shadow-soft text-xs space-y-1.5">
-            <div className="font-bold text-[#123B5D] text-[11px] uppercase tracking-wider">{t('legendTitle', language)}</div>
-            <div className="flex items-center space-x-2 text-[#243746]">
-              <span className="w-3 h-3 rounded-sm bg-[#2E7D5B]"></span>
+          <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 z-[1000] bg-white/95 backdrop-blur-sm border border-[#DDE6EC] p-2 sm:p-3 rounded-lg shadow-soft text-[10px] sm:text-xs space-y-1 sm:space-y-1.5">
+            <div className="font-bold text-[#123B5D] text-[10px] sm:text-[11px] uppercase tracking-wider">{t('legendTitle', language)}</div>
+            <div className="flex items-center space-x-1.5 sm:space-x-2 text-[#243746]">
+              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm bg-[#2E7D5B]"></span>
               <span>{t('legendNotified', language)}</span>
             </div>
-            <div className="flex items-center space-x-2 text-[#243746]">
-              <span className="w-3 h-3 rounded-sm bg-[#123B5D]/30 border border-[#123B5D]"></span>
+            <div className="flex items-center space-x-1.5 sm:space-x-2 text-[#243746]">
+              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm bg-[#123B5D]/30 border border-[#123B5D]"></span>
               <span>{t('legendHighway', language)}</span>
             </div>
           </div>
         </div>
 
         {/* Right Cadastral Parcel Dossier (4 cols) */}
-        <div className="lg:col-span-4 soft-card p-6 space-y-4">
+        <div className="lg:col-span-4 soft-card p-4 sm:p-6 space-y-4">
           <div className="flex items-center justify-between border-b border-[#DDE6EC] pb-3">
             <h3 className="text-sm font-bold text-[#123B5D] uppercase tracking-wider flex items-center gap-2">
               <MapPin className="w-4 h-4 text-[#123B5D]" />
@@ -241,7 +241,7 @@ export const MyLandGISPage: React.FC = () => {
                   </div>
                   <button
                     onClick={() => navigate(`/cases/${selectedParcel.cases[0].id}`)}
-                    className="w-full mt-2 py-2 px-3 bg-[#123B5D] hover:bg-[#1B4D78] text-white text-xs font-semibold rounded-lg flex items-center justify-center space-x-1 transition cursor-pointer"
+                    className="w-full mt-2 py-2.5 px-3 bg-[#123B5D] hover:bg-[#1B4D78] text-white text-xs font-semibold rounded-lg flex items-center justify-center space-x-1 transition cursor-pointer min-h-[44px]"
                   >
                     <span>{t('openCaseBtn', language)}</span>
                     <ArrowRight className="w-3.5 h-3.5 text-[#E8B84A]" />
@@ -251,7 +251,7 @@ export const MyLandGISPage: React.FC = () => {
 
               <button
                 onClick={() => navigate(`/grievance/new?survey=${selectedParcel.surveyNumber}`)}
-                className="w-full py-2 px-3 bg-white border border-[#DDE6EC] hover:bg-[#F8FAFC] text-[#123B5D] text-xs font-semibold rounded-lg flex items-center justify-center space-x-1 transition cursor-pointer shadow-soft"
+                className="w-full py-2.5 px-3 bg-white border border-[#DDE6EC] hover:bg-[#F8FAFC] text-[#123B5D] text-xs font-semibold rounded-lg flex items-center justify-center space-x-1 transition cursor-pointer shadow-soft min-h-[44px]"
               >
                 <ShieldAlert className="w-3.5 h-3.5 text-[#C7972D]" />
                 <span>{t('serviceGrievanceTitle', language)}</span>

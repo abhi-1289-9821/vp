@@ -163,9 +163,9 @@ export const LoginPage: React.FC = () => {
         </div>
 
         {/* RIGHT 55% (7 cols): Clean, Comfortable Sign-In Portal */}
-        <div className="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-center space-y-6">
+        <div className="lg:col-span-7 p-4 sm:p-8 lg:p-10 flex flex-col justify-center space-y-5 sm:space-y-6">
           <div className="space-y-1 text-center sm:text-left">
-            <h1 className="text-2xl font-extrabold text-[#123B5D] tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-[#123B5D] tracking-tight">
               {t('welcomeTitle', language)}
             </h1>
             <p className="text-xs sm:text-sm text-[#667784]">
@@ -174,7 +174,7 @@ export const LoginPage: React.FC = () => {
           </div>
 
           {/* 1-Click Evaluation Credentials for Hackathon Evaluators */}
-          <div className="bg-[#F5FAFC] border border-[#DDE6EC] p-3.5 rounded-xl space-y-2">
+          <div className="bg-[#F5FAFC] border border-[#DDE6EC] p-3 sm:p-3.5 rounded-xl space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-[#123B5D] flex items-center gap-1.5">
                 <UserCheck className="w-4 h-4 text-[#123B5D]" />
@@ -184,11 +184,11 @@ export const LoginPage: React.FC = () => {
                 {t('demoBadge', language)}
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => populateDemoUser('CITIZEN')}
-                className={`p-2.5 rounded-lg border text-left transition cursor-pointer ${
+                className={`p-2.5 rounded-lg border text-left transition cursor-pointer min-h-[44px] ${
                   email === 'citizen@sahaay.demo' && !isRegister
                     ? 'bg-[#123B5D] text-white border-[#123B5D] shadow-soft'
                     : 'bg-white border-[#DDE6EC] text-[#243746] hover:bg-slate-50'
@@ -200,7 +200,7 @@ export const LoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => populateDemoUser('OFFICER')}
-                className={`p-2.5 rounded-lg border text-left transition cursor-pointer ${
+                className={`p-2.5 rounded-lg border text-left transition cursor-pointer min-h-[44px] ${
                   email === 'officer@sahaay.demo' && !isRegister
                     ? 'bg-[#123B5D] text-white border-[#123B5D] shadow-soft'
                     : 'bg-white border-[#DDE6EC] text-[#243746] hover:bg-slate-50'

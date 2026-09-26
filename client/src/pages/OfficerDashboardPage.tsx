@@ -85,23 +85,23 @@ export const OfficerDashboardPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-2.5 self-start sm:self-auto">
+          <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
             <button
               onClick={() => navigate('/officer/cases')}
-              className="px-3.5 py-2 bg-[#1B4D78] hover:bg-[#1B4D78]/80 text-white text-xs font-semibold rounded-lg border border-white/20 cursor-pointer shadow-soft"
+              className="px-3.5 py-2.5 bg-[#1B4D78] hover:bg-[#1B4D78]/80 text-white text-xs font-semibold rounded-lg border border-white/20 cursor-pointer shadow-soft min-h-[44px]"
             >
               {t('officerCasesTitle', language)}
             </button>
             <button
               onClick={() => navigate('/map')}
-              className="px-3.5 py-2 bg-[#E8B84A] hover:bg-[#C7972D] text-[#123B5D] text-xs font-bold rounded-lg shadow-soft cursor-pointer transition"
+              className="px-3.5 py-2.5 bg-[#E8B84A] hover:bg-[#C7972D] text-[#123B5D] text-xs font-bold rounded-lg shadow-soft cursor-pointer transition min-h-[44px]"
             >
               {t('navGisMap', language)}
             </button>
           </div>
         </div>
 
-        <div className="p-4 bg-[#F8FAFC] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-[#667784] border-t border-[#DDE6EC]">
+        <div className="p-3.5 sm:p-4 bg-[#F8FAFC] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-[#667784] border-t border-[#DDE6EC]">
           <span className="font-mono text-[11px]">
             {t('footerStatutoryAct', language)}
           </span>
@@ -125,29 +125,29 @@ export const OfficerDashboardPage: React.FC = () => {
 
       {/* KPI Stats Grid */}
       {stats && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="soft-card p-5 space-y-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="soft-card p-4 sm:p-5 space-y-1">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#667784] block">
               {t('metricTotalCases', language)}
             </span>
             <span className="text-2xl font-black text-[#123B5D] font-mono">{stats.activeCases}</span>
           </div>
 
-          <div className="soft-card p-5 space-y-1">
+          <div className="soft-card p-4 sm:p-5 space-y-1">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#123B5D] block">
               {t('metricPendingVerification', language)}
             </span>
             <span className="text-2xl font-black text-[#123B5D] font-mono">{stats.pendingVerifications}</span>
           </div>
 
-          <div className="soft-card p-5 space-y-1">
+          <div className="soft-card p-4 sm:p-5 space-y-1">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#C7972D] block">
               {t('metricOpenGrievances', language)}
             </span>
             <span className="text-2xl font-black text-[#C7972D] font-mono">{stats.openGrievances}</span>
           </div>
 
-          <div className="soft-card p-5 space-y-1">
+          <div className="soft-card p-4 sm:p-5 space-y-1">
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#C62828] block">
               {t('potentialDiscrepancy', language)}
             </span>

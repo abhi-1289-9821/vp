@@ -40,32 +40,32 @@ export const UtilityBar: React.FC = () => {
 
   return (
     <div className="bg-[#123B5D] text-white text-xs border-b border-[#1B4D78] select-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex flex-wrap items-center justify-between gap-2">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between gap-2">
         {/* Left: Administrative Label */}
-        <div className="flex items-center space-x-2 text-[11px] sm:text-xs">
-          <span className="font-bold text-[#E8B84A]">
+        <div className="flex items-center space-x-1.5 sm:space-x-2 text-[10px] sm:text-xs min-w-0">
+          <span className="font-bold text-[#E8B84A] shrink-0">
             {t('appName', language)}
           </span>
           <span className="text-slate-400">|</span>
-          <span className="text-slate-200 font-medium">
+          <span className="text-slate-200 font-medium truncate">
             {t('citizenPortal', language)}
           </span>
           <span className="hidden md:inline text-slate-400">•</span>
-          <span className="hidden md:inline text-slate-300">
+          <span className="hidden md:inline text-slate-300 truncate">
             {t('heroSub', language)}
           </span>
         </div>
 
         {/* Right: Accessibility Controls & Utilities */}
-        <div className="flex items-center space-x-3 text-[11px] sm:text-xs">
+        <div className="flex items-center space-x-2 sm:space-x-3 text-[11px] sm:text-xs shrink-0">
           {/* Font Sizer Controls */}
-          <div className="flex items-center space-x-1 border-r border-[#1B4D78] pr-3">
-            <span className="text-slate-300 hidden sm:inline text-[10px] uppercase font-semibold mr-1">
+          <div className="flex items-center space-x-0.5 sm:space-x-1 border-r border-[#1B4D78] pr-2 sm:pr-3">
+            <span className="text-slate-300 hidden md:inline text-[10px] uppercase font-semibold mr-1">
               Text:
             </span>
             <button
               onClick={() => handleFontSizeChange('normal')}
-              className={`px-1.5 py-0.5 rounded text-[11px] font-bold transition cursor-pointer ${
+              className={`min-w-[24px] h-6 px-1.5 rounded text-[11px] font-bold transition cursor-pointer flex items-center justify-center ${
                 fontSize === 'normal'
                   ? 'bg-[#1B4D78] text-[#E8B84A]'
                   : 'text-slate-300 hover:text-white'
@@ -76,7 +76,7 @@ export const UtilityBar: React.FC = () => {
             </button>
             <button
               onClick={() => handleFontSizeChange('large')}
-              className={`px-1.5 py-0.5 rounded text-[11px] font-bold transition cursor-pointer ${
+              className={`min-w-[24px] h-6 px-1.5 rounded text-[11px] font-bold transition cursor-pointer flex items-center justify-center ${
                 fontSize === 'large'
                   ? 'bg-[#1B4D78] text-[#E8B84A]'
                   : 'text-slate-300 hover:text-white'
@@ -87,7 +87,7 @@ export const UtilityBar: React.FC = () => {
             </button>
             <button
               onClick={() => handleFontSizeChange('larger')}
-              className={`px-1.5 py-0.5 rounded text-[11px] font-bold transition cursor-pointer ${
+              className={`min-w-[24px] h-6 px-1.5 rounded text-[11px] font-bold transition cursor-pointer flex items-center justify-center ${
                 fontSize === 'larger'
                   ? 'bg-[#1B4D78] text-[#E8B84A]'
                   : 'text-slate-300 hover:text-white'
@@ -99,20 +99,20 @@ export const UtilityBar: React.FC = () => {
           </div>
 
           {/* 23 Languages Dropdown Switcher */}
-          <div className="relative border-r border-[#1B4D78] pr-3" ref={dropdownRef}>
+          <div className="relative border-r border-[#1B4D78] pr-2 sm:pr-3" ref={dropdownRef}>
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center space-x-1.5 text-slate-200 hover:text-[#E8B84A] font-semibold transition cursor-pointer bg-[#1B4D78]/50 hover:bg-[#1B4D78] px-2 py-0.5 rounded-md"
+              className="flex items-center space-x-1 sm:space-x-1.5 text-slate-200 hover:text-[#E8B84A] font-semibold transition cursor-pointer bg-[#1B4D78]/50 hover:bg-[#1B4D78] px-1.5 sm:px-2 py-1 rounded-md text-[11px]"
               title="Select Language (23 Official Languages Supported)"
             >
-              <Globe className="w-3.5 h-3.5 text-[#E8B84A]" />
-              <span className="max-w-[130px] truncate">{currentLangInfo.displayLabel}</span>
-              <ChevronDown className="w-3 h-3 text-slate-300" />
+              <Globe className="w-3.5 h-3.5 text-[#E8B84A] shrink-0" />
+              <span className="max-w-[85px] sm:max-w-[130px] truncate">{currentLangInfo.displayLabel}</span>
+              <ChevronDown className="w-3 h-3 text-slate-300 shrink-0" />
             </button>
 
             {/* Language Selection Modal / Dropdown */}
             {dropdownOpen && (
-              <div className="absolute right-0 mt-1.5 w-72 sm:w-80 bg-white text-[#243746] rounded-xl shadow-2xl border border-[#DDE6EC] z-50 overflow-hidden animate-in fade-in duration-150">
+              <div className="fixed sm:absolute right-2 sm:right-0 top-10 sm:top-auto sm:mt-1.5 w-[calc(100vw-16px)] sm:w-80 max-w-[340px] bg-white text-[#243746] rounded-xl shadow-2xl border border-[#DDE6EC] z-50 overflow-hidden animate-in fade-in duration-150">
                 <div className="p-2.5 bg-[#123B5D] text-white flex items-center justify-between border-b border-[#1B4D78]">
                   <div className="flex items-center space-x-2">
                     <Globe className="w-4 h-4 text-[#E8B84A]" />

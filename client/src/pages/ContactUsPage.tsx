@@ -53,10 +53,10 @@ export const ContactUsPage: React.FC = () => {
   return (
     <article className="space-y-6" aria-labelledby="contact-page-title">
       {/* Page Header */}
-      <header className="soft-card p-6 sm:p-8 bg-gradient-to-br from-white to-[#F5FAFC] border-l-4 border-l-[#123B5D]">
+      <header className="soft-card p-4 sm:p-8 bg-gradient-to-br from-white to-[#F5FAFC] border-l-4 border-l-[#123B5D]">
         <div className="flex items-center space-x-2.5">
           <div
-            className="w-10 h-10 rounded-lg bg-[#123B5D] text-[#E8B84A] flex items-center justify-center font-bold shadow-soft"
+            className="w-10 h-10 rounded-lg bg-[#123B5D] text-[#E8B84A] flex items-center justify-center font-bold shadow-soft shrink-0"
             aria-hidden="true"
           >
             <Headphones className="w-5 h-5" />
@@ -64,7 +64,7 @@ export const ContactUsPage: React.FC = () => {
           <div>
             <h1
               id="contact-page-title"
-              className="text-2xl sm:text-3xl font-extrabold text-[#123B5D] tracking-tight"
+              className="text-xl sm:text-3xl font-extrabold text-[#123B5D] tracking-tight"
             >
               {t('contactTitle', language)}
             </h1>
@@ -83,7 +83,7 @@ export const ContactUsPage: React.FC = () => {
           aria-labelledby="dir-title"
         >
           {/* Helpdesk Card */}
-          <div className="soft-card p-6 space-y-4">
+          <div className="soft-card p-4 sm:p-6 space-y-4">
             <div className="flex items-center space-x-2 border-b border-[#DDE6EC] pb-3">
               <Building className="w-5 h-5 text-[#123B5D]" aria-hidden="true" />
               <h2 id="dir-title" className="text-sm font-bold text-[#123B5D] uppercase tracking-wider">
@@ -145,7 +145,7 @@ export const ContactUsPage: React.FC = () => {
           </div>
 
           {/* Quick FAQ note */}
-          <div className="soft-card p-5 bg-[#FFF9F0] border-l-4 border-l-[#E8B84A] text-xs space-y-1.5">
+          <div className="soft-card p-4 sm:p-5 bg-[#FFF9F0] border-l-4 border-l-[#E8B84A] text-xs space-y-1.5">
             <div className="flex items-center space-x-2 font-bold text-[#123B5D]">
               <FileQuestion className="w-4 h-4 text-[#E8B84A]" aria-hidden="true" />
               <span>Looking for Formal Objections?</span>
@@ -161,7 +161,7 @@ export const ContactUsPage: React.FC = () => {
           className="lg:col-span-7"
           aria-labelledby="enquiry-form-title"
         >
-          <div className="soft-card p-6 sm:p-8">
+          <div className="soft-card p-4 sm:p-8">
             <div className="border-b border-[#DDE6EC] pb-4 mb-6">
               <h2
                 id="enquiry-form-title"
@@ -197,7 +197,7 @@ export const ContactUsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="px-4 py-2 bg-[#123B5D] text-white rounded-lg text-xs font-bold hover:bg-[#1B4D78] transition focus:outline-none focus:ring-2 focus:ring-[#123B5D]"
+                  className="px-4 py-2 bg-[#123B5D] text-white rounded-lg text-xs font-bold hover:bg-[#1B4D78] transition focus:outline-none focus:ring-2 focus:ring-[#123B5D] min-h-[44px]"
                 >
                   Submit Another Inquiry
                 </button>
@@ -217,7 +217,7 @@ export const ContactUsPage: React.FC = () => {
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     required
-                    className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] bg-white text-[#243746] focus:outline-none focus:ring-2 focus:ring-[#123B5D]"
+                    className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] bg-white text-[#243746] focus:outline-none focus:ring-2 focus:ring-[#123B5D] min-h-[44px]"
                   >
                     <option value="SURVEY_ENQUIRY">Land Survey & Parcel Boundary Inquiry</option>
                     <option value="COMPENSATION_ENQUIRY">Compensation Calculation & Solatium Inquiry</option>
@@ -243,7 +243,7 @@ export const ContactUsPage: React.FC = () => {
                       onChange={(e) => setName(e.target.value)}
                       required
                       placeholder="e.g. Rajesh Sharma"
-                      className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] bg-white text-[#243746] focus:outline-none focus:ring-2 focus:ring-[#123B5D]"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] bg-white text-[#243746] focus:outline-none focus:ring-2 focus:ring-[#123B5D] min-h-[44px]"
                     />
                   </div>
 
@@ -261,7 +261,7 @@ export const ContactUsPage: React.FC = () => {
                       onChange={(e) => setPhone(e.target.value)}
                       required
                       placeholder="e.g. 9876543210"
-                      className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] bg-white text-[#243746] focus:outline-none focus:ring-2 focus:ring-[#123B5D]"
+                      className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] bg-white text-[#243746] focus:outline-none focus:ring-2 focus:ring-[#123B5D] min-h-[44px]"
                     />
                   </div>
                 </div>

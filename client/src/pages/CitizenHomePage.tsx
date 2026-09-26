@@ -248,11 +248,11 @@ export const CitizenHomePage: React.FC = () => {
   return (
     <div className="space-y-8 pb-12 text-[#2D1810]">
       {/* ================= 1. WELCOMING CITIZEN WORKSPACE BANNER ================= */}
-      <section className="bg-gradient-to-r from-[#E8F5EC] via-[#FDFBF7] to-[#FFF4D6] border border-[#E6E2DA] rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+      <section className="bg-gradient-to-r from-[#E8F5EC] via-[#FDFBF7] to-[#FFF4D6] border border-[#E6E2DA] rounded-3xl p-4 sm:p-8 shadow-sm relative overflow-hidden">
         {/* Subtle Cadastral Grid Texture */}
         <div className="absolute inset-0 bg-[radial-gradient(#E6E2DA_1px,transparent_1px)] [background-size:20px_20px] opacity-35 pointer-events-none"></div>
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
           <div className="space-y-3 max-w-3xl">
             {/* Identity Badge */}
             <div className="flex flex-wrap items-center gap-2">
@@ -269,10 +269,10 @@ export const CitizenHomePage: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#2D1810]">
+              <h1 className="text-xl sm:text-3xl font-black tracking-tight text-[#2D1810]">
                 {t('welcomeBack', language)}, {user?.name || 'Rajesh Sharma'}
               </h1>
-              <p className="text-xs sm:text-sm text-[#6B5E57] flex flex-wrap items-center gap-2">
+              <p className="text-xs sm:text-sm text-[#6B5E57] flex flex-wrap items-center gap-1.5 sm:gap-2">
                 <span className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5 text-[#047857]" />
                   <span>{t('village', language)} <strong>{parcel?.village || user?.profile?.village || 'Rampur'}</strong>, {t('tehsil', language)} <strong>{parcel?.district || user?.profile?.district || 'Bhopal'}</strong></span>
@@ -285,8 +285,8 @@ export const CitizenHomePage: React.FC = () => {
             </div>
 
             {/* Identity & Biometric Verification Status Strip */}
-            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#E8F5E9] border border-[#047857]/30 text-[#047857] font-bold">
+            <div className="pt-1 flex flex-wrap items-center gap-2 text-xs">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#E8F5E9] border border-[#047857]/30 text-[#047857] font-bold">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>
                   {user?.profile?.panStatus === 'VERIFIED'
@@ -297,7 +297,7 @@ export const CitizenHomePage: React.FC = () => {
                 </span>
               </div>
 
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#E8F5E9] border border-[#047857]/30 text-[#047857] font-bold">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#E8F5E9] border border-[#047857]/30 text-[#047857] font-bold">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>
                   {user?.profile?.faceMatchStatus === 'VERIFIED'
@@ -315,10 +315,10 @@ export const CitizenHomePage: React.FC = () => {
           </div>
 
           {/* Quick Header Actions */}
-          <div className="flex flex-wrap items-center gap-3 self-start lg:self-center shrink-0">
+          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3 self-stretch sm:self-start lg:self-center shrink-0">
             <Link
               to={primaryCase ? `/cases/${primaryCase.id}` : '/find-land'}
-              className="px-5 py-2.5 bg-[#047857] hover:bg-[#065F46] text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center space-x-1.5 cursor-pointer"
+              className="px-5 py-2.5 bg-[#047857] hover:bg-[#065F46] text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5 cursor-pointer min-h-[44px]"
             >
               <Clock className="w-4 h-4 text-[#D97706]" />
               <span>{t('fullCaseDossier', language)}</span>
@@ -326,7 +326,7 @@ export const CitizenHomePage: React.FC = () => {
 
             <Link
               to="/documents"
-              className="px-4 py-2.5 bg-white hover:bg-[#F8F7F4] text-[#2D1810] text-xs font-bold rounded-xl border border-[#E6E2DA] shadow-sm transition flex items-center space-x-1.5 cursor-pointer"
+              className="px-4 py-2.5 bg-white hover:bg-[#F8F7F4] text-[#2D1810] text-xs font-bold rounded-xl border border-[#E6E2DA] shadow-sm transition flex items-center justify-center space-x-1.5 cursor-pointer min-h-[44px]"
             >
               <FolderLock className="w-4 h-4 text-[#047857]" />
               <span>{t('digitalLocker', language)}</span>
@@ -391,9 +391,9 @@ export const CitizenHomePage: React.FC = () => {
       )}
 
       {/* ================= 3. OPERATIONAL KPI METRICS BAR ================= */}
-      <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         {/* Metric 1 */}
-        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-1">
           <span className="text-[10px] font-bold text-[#6B5E57] uppercase tracking-wider block">
             {t('surveyedPlot', language)}
           </span>
@@ -406,7 +406,7 @@ export const CitizenHomePage: React.FC = () => {
         </div>
 
         {/* Metric 2 */}
-        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-1">
           <span className="text-[10px] font-bold text-[#6B5E57] uppercase tracking-wider block">
             {t('statutoryStage', language)}
           </span>
@@ -419,7 +419,7 @@ export const CitizenHomePage: React.FC = () => {
         </div>
 
         {/* Metric 3 */}
-        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-1">
           <span className="text-[10px] font-bold text-[#6B5E57] uppercase tracking-wider block">
             {t('assessedAward', language)}
           </span>
@@ -432,7 +432,7 @@ export const CitizenHomePage: React.FC = () => {
         </div>
 
         {/* Metric 4 */}
-        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-4 shadow-sm space-y-1">
+        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-1">
           <span className="text-[10px] font-bold text-[#6B5E57] uppercase tracking-wider block">
             {t('rrGrant', language)}
           </span>
@@ -445,7 +445,7 @@ export const CitizenHomePage: React.FC = () => {
         </div>
 
         {/* Metric 5 */}
-        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-4 shadow-sm space-y-1 col-span-2 sm:col-span-1">
+        <div className="bg-white border border-[#E6E2DA] rounded-2xl p-3.5 sm:p-4 shadow-sm space-y-1 sm:col-span-2 lg:col-span-1">
           <span className="text-[10px] font-bold text-[#6B5E57] uppercase tracking-wider block">
             {t('disbursalChannel', language)}
           </span>
@@ -464,7 +464,7 @@ export const CitizenHomePage: React.FC = () => {
         {/* Left Column (7 cols): Milestone Tracker + Compensation Dossier + Documents + Khasra Search */}
         <div className="lg:col-span-7 space-y-6">
           {/* Card 1: Statutory Acquisition Milestone Lifecycle */}
-          <div className="bg-white border border-[#E6E2DA] rounded-3xl p-6 shadow-sm space-y-5">
+          <div className="bg-white border border-[#E6E2DA] rounded-3xl p-4 sm:p-6 shadow-sm space-y-5">
             <div className="flex items-center justify-between border-b border-[#E6E2DA] pb-3">
               <div className="space-y-0.5">
                 <span className="text-[10px] font-bold text-[#D97706] uppercase tracking-wider block">
@@ -481,7 +481,7 @@ export const CitizenHomePage: React.FC = () => {
 
             {/* Step Progress Timeline */}
             <div className="space-y-3">
-              <div className="grid grid-cols-5 gap-1.5 text-center text-[10px]">
+              <div className="grid grid-cols-5 gap-1 sm:gap-1.5 text-center text-[9px] sm:text-[10px]">
                 {statutoryMilestones.map((ms) => (
                   <div key={ms.step} className="space-y-1">
                     <div
@@ -499,7 +499,7 @@ export const CitizenHomePage: React.FC = () => {
                 ))}
               </div>
 
-              <div className="bg-[#F8F7F4] border border-[#E6E2DA] rounded-2xl p-4 text-xs space-y-2">
+              <div className="bg-[#F8F7F4] border border-[#E6E2DA] rounded-2xl p-3.5 sm:p-4 text-xs space-y-2">
                 <div className="flex items-center justify-between text-[#2D1810]">
                   <strong className="font-bold flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-[#D97706]" />
@@ -531,7 +531,7 @@ export const CitizenHomePage: React.FC = () => {
           </div>
 
           {/* Card 2: Detailed Parcel & Statutory Valuation Dossier */}
-          <div className="bg-white border border-[#E6E2DA] rounded-3xl p-6 shadow-sm space-y-5">
+          <div className="bg-white border border-[#E6E2DA] rounded-3xl p-4 sm:p-6 shadow-sm space-y-5">
             <div className="flex items-center justify-between border-b border-[#E6E2DA] pb-3">
               <div className="space-y-0.5">
                 <span className="text-[10px] font-bold text-[#047857] uppercase tracking-wider block">
@@ -550,7 +550,7 @@ export const CitizenHomePage: React.FC = () => {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div className="bg-[#F8F7F4] p-3.5 rounded-2xl border border-[#E6E2DA]">
                 <span className="text-[11px] text-[#6B5E57] block">{t('notifiedAcqArea', language)}:</span>
                 <span className="font-bold text-[#2D1810] text-sm font-mono">2.43 Hectares</span>
@@ -575,13 +575,13 @@ export const CitizenHomePage: React.FC = () => {
                 <span className="text-[10px] text-[#6B5E57] block">{t('resettlementMandatory', language)}</span>
               </div>
 
-              <div className="col-span-2 bg-[#047857] text-white p-4 sm:p-5 rounded-2xl flex items-center justify-between shadow-sm">
+              <div className="sm:col-span-2 bg-[#047857] text-white p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm">
                 <div>
                   <span className="text-xs text-slate-200 block">{t('totalAssessedStatutoryAward', language)}:</span>
-                  <span className="text-2xl font-black font-mono">₹38,40,000</span>
+                  <span className="text-xl sm:text-2xl font-black font-mono">₹38,40,000</span>
                 </div>
-                <div className="text-right">
-                  <span className="text-[10px] bg-white text-[#047857] px-2.5 py-1 rounded-md font-bold uppercase block shadow-sm">
+                <div className="sm:text-right">
+                  <span className="text-[10px] bg-white text-[#047857] px-2.5 py-1 rounded-md font-bold uppercase inline-block shadow-sm">
                     {t('pfmsVerified', language)}
                   </span>
                   <span className="text-[11px] text-slate-200 block mt-1">{t('disbursalDirectBank', language)}</span>

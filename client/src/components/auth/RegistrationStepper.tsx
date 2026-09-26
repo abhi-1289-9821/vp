@@ -42,18 +42,18 @@ export const RegistrationStepper: React.FC<RegistrationStepperProps> = ({
           return (
             <div key={s.number} className="relative z-10 flex flex-col items-center group">
               <div
-                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-sm ${
+                className={`w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 shadow-sm ${
                   isCompleted
-                    ? 'bg-[#047857] text-white ring-4 ring-[#047857]/15'
+                    ? 'bg-[#047857] text-white ring-2 sm:ring-4 ring-[#047857]/15'
                     : isCurrent
-                    ? 'bg-[#123B5D] text-white ring-4 ring-[#123B5D]/20 scale-105'
+                    ? 'bg-[#123B5D] text-white ring-2 sm:ring-4 ring-[#123B5D]/20 scale-105'
                     : 'bg-white border-2 border-[#CBD5E1] text-[#64748B]'
                 }`}
               >
                 {isCompleted ? (
-                  <Check className="w-4 h-4 stroke-[3]" />
+                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" />
                 ) : (
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 )}
               </div>
               <span

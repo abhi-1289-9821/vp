@@ -43,7 +43,7 @@ export const NotificationCenterPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="soft-card p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="soft-card p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
           <div className="flex items-center space-x-2.5">
             <div className="w-8 h-8 rounded-lg bg-[#123B5D] text-[#E8B84A] flex items-center justify-center font-bold text-xs shadow-soft">
@@ -60,7 +60,7 @@ export const NotificationCenterPage: React.FC = () => {
 
         <button
           onClick={handleMarkAllRead}
-          className="inline-flex items-center space-x-1.5 px-4 py-2 bg-[#EAF3F8] hover:bg-[#DDE6EC] text-[#123B5D] text-xs font-semibold rounded-lg transition cursor-pointer self-start sm:self-auto"
+          className="inline-flex items-center space-x-1.5 px-4 py-2.5 bg-[#EAF3F8] hover:bg-[#DDE6EC] text-[#123B5D] text-xs font-semibold rounded-lg transition cursor-pointer self-start sm:self-auto min-h-[44px]"
         >
           <CheckCheck className="w-4 h-4 text-[#123B5D]" />
           <span>{t('markAllReadBtn', language)}</span>
@@ -74,7 +74,7 @@ export const NotificationCenterPage: React.FC = () => {
             <div
               key={n.id}
               onClick={() => !n.isRead && handleMarkOneRead(n.id)}
-              className={`soft-card p-5 transition cursor-pointer flex items-start justify-between gap-4 ${
+              className={`soft-card p-4 sm:p-5 transition cursor-pointer flex items-start justify-between gap-3 sm:gap-4 ${
                 !n.isRead
                   ? 'border-l-4 border-l-[#E8B84A] bg-[#FFF9F0]/40'
                   : 'opacity-80 bg-white'

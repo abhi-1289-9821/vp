@@ -45,11 +45,11 @@ export const CompensationRRPage: React.FC = () => {
       {comp ? (
         <div className="space-y-6">
           {/* Visual Progression */}
-          <div className="soft-card p-6 space-y-4">
+          <div className="soft-card p-4 sm:p-6 space-y-4">
             <h2 className="text-sm font-bold text-[#123B5D] uppercase tracking-wider">
               {t('trackProgress', language)}
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
               <div className="p-3.5 rounded-xl bg-[#E8F4EC] border border-[#2E7D5B]/30 space-y-1">
                 <span className="text-[10px] uppercase font-bold text-[#2E7D5B] block">1. {t('assessedCardTitle', language)}</span>
                 <span className="text-sm font-bold text-[#2E7D5B] font-mono">₹{comp.totalAssessedINR.toLocaleString('en-IN')}</span>
@@ -76,8 +76,8 @@ export const CompensationRRPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Main Compensation Table (8 Cols) */}
             <div className="lg:col-span-8 space-y-6">
-              <div className="soft-card p-6 space-y-4">
-                <div className="flex items-center justify-between border-b border-[#DDE6EC] pb-3">
+              <div className="soft-card p-4 sm:p-6 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#DDE6EC] pb-3">
                   <div>
                     <h3 className="text-sm font-bold text-[#123B5D] uppercase tracking-wider">
                       {t('breakdownTitle', language)}
@@ -90,12 +90,12 @@ export const CompensationRRPage: React.FC = () => {
                 </div>
 
                 {/* Total Highlight Card */}
-                <div className="bg-[#123B5D] text-white p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-soft">
+                <div className="bg-[#123B5D] text-white p-4 sm:p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-soft">
                   <div>
                     <span className="text-[10px] uppercase font-bold tracking-wider text-[#E8B84A]">
                       {t('totalCompensation', language)}
                     </span>
-                    <div className="text-2xl font-black mt-0.5 font-mono text-white">
+                    <div className="text-xl sm:text-2xl font-black mt-0.5 font-mono text-white">
                       ₹{(comp.totalAssessedINR).toLocaleString('en-IN')}
                     </div>
                     <span className="text-xs text-slate-300">
@@ -111,8 +111,8 @@ export const CompensationRRPage: React.FC = () => {
                 </div>
 
                 {/* Breakdown List */}
-                <div className="border border-[#DDE6EC] rounded-xl overflow-hidden text-xs">
-                  <table className="w-full text-left border-collapse">
+                <div className="border border-[#DDE6EC] rounded-xl overflow-x-auto text-xs">
+                  <table className="w-full min-w-[300px] text-left border-collapse">
                     <thead>
                       <tr className="gov-table-header">
                         <th className="p-3">{t('details', language)}</th>

@@ -87,7 +87,7 @@ export const CaseDetailPage: React.FC = () => {
           <StatusBadge status={caseData.stage} />
         </div>
 
-        <div className="p-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs bg-[#F8FAFC] border-b border-[#DDE6EC]">
+        <div className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs bg-[#F8FAFC] border-b border-[#DDE6EC]">
           <div>
             <span className="text-[#667784] block font-semibold text-[11px]">{t('project', language)}:</span>
             <span className="font-bold text-[#123B5D] block truncate mt-0.5">{project?.name}</span>
@@ -106,17 +106,17 @@ export const CaseDetailPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 bg-white flex flex-wrap gap-2.5 text-xs">
+        <div className="p-3.5 sm:p-4 bg-white flex flex-wrap gap-2.5 text-xs">
           <button
             onClick={() => navigate('/map')}
-            className="px-3.5 py-2 bg-white border border-[#DDE6EC] hover:bg-[#F8FAFC] text-[#123B5D] font-semibold rounded-lg flex items-center space-x-1.5 cursor-pointer shadow-soft"
+            className="px-3.5 py-2.5 bg-white border border-[#DDE6EC] hover:bg-[#F8FAFC] text-[#123B5D] font-semibold rounded-lg flex items-center space-x-1.5 cursor-pointer shadow-soft min-h-[44px]"
           >
             <Map className="w-4 h-4 text-[#123B5D]" />
             <span>{t('viewCadastralMapBtn', language)}</span>
           </button>
           <button
             onClick={() => navigate(`/grievance?caseId=${caseData.id}&survey=${parcel?.surveyNumber}`)}
-            className="px-3.5 py-2 bg-[#FFF9F0] border border-[#E8B84A] hover:bg-[#FFF3E0] text-[#123B5D] font-semibold rounded-lg flex items-center space-x-1.5 cursor-pointer"
+            className="px-3.5 py-2.5 bg-[#FFF9F0] border border-[#E8B84A] hover:bg-[#FFF3E0] text-[#123B5D] font-semibold rounded-lg flex items-center space-x-1.5 cursor-pointer min-h-[44px]"
           >
             <ShieldAlert className="w-4 h-4 text-[#C7972D]" />
             <span>{t('fileSection15GrievanceBtn', language)}</span>

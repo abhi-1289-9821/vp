@@ -125,7 +125,7 @@ export const GrievancePage: React.FC = () => {
 
       {/* Grievance Submission Form */}
       {showForm && (
-        <div className="soft-card p-6 sm:p-8 space-y-4 border-2 border-[#123B5D]">
+        <div className="soft-card p-4 sm:p-8 space-y-4 border-2 border-[#123B5D]">
           <div className="flex items-center space-x-2 border-b border-[#DDE6EC] pb-3">
             <Scale className="w-5 h-5 text-[#123B5D]" />
             <h3 className="text-base font-bold text-[#123B5D]">
@@ -134,7 +134,7 @@ export const GrievancePage: React.FC = () => {
           </div>
 
           {detectedDiscrepancy && (
-            <div className="bg-[#FFF9F0] p-4 rounded-xl border border-[#E8B84A]/60 text-xs text-[#123B5D]">
+            <div className="bg-[#FFF9F0] p-3.5 sm:p-4 rounded-xl border border-[#E8B84A]/60 text-xs text-[#123B5D]">
               <strong className="block uppercase text-[10px] text-[#C7972D] font-bold">{t('discrepancySummaryTitle', language)}:</strong>
               <p className="mt-1">{detectedDiscrepancy.summary || JSON.stringify(detectedDiscrepancy)}</p>
             </div>
@@ -154,7 +154,7 @@ export const GrievancePage: React.FC = () => {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs font-bold bg-[#F8FAFC] text-[#123B5D]"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs font-bold bg-[#F8FAFC] text-[#123B5D] min-h-[44px]"
               >
                 {categories.map((c) => (
                   <option key={c.value} value={c.value}>{c.label}</option>
@@ -172,7 +172,7 @@ export const GrievancePage: React.FC = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder={t('grievanceSubjectPlaceholder', language)}
-                className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs font-medium focus:outline-none focus:border-[#123B5D] bg-[#F8FAFC] text-[#243746]"
+                className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs font-medium focus:outline-none focus:border-[#123B5D] bg-[#F8FAFC] text-[#243746] min-h-[44px]"
               />
             </div>
 
@@ -190,18 +190,18 @@ export const GrievancePage: React.FC = () => {
               ></textarea>
             </div>
 
-            <div className="flex justify-end gap-3 pt-3 border-t border-[#DDE6EC]">
+            <div className="flex flex-col sm:flex-row justify-end gap-2.5 sm:gap-3 pt-3 border-t border-[#DDE6EC]">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="px-4 py-2 border border-[#DDE6EC] text-[#667784] hover:bg-slate-50 font-semibold text-xs rounded-lg cursor-pointer"
+                className="px-4 py-2.5 border border-[#DDE6EC] text-[#667784] hover:bg-slate-50 font-semibold text-xs rounded-lg cursor-pointer min-h-[44px]"
               >
                 {t('cancelGrievanceBtn', language)}
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-6 py-2 bg-[#123B5D] hover:bg-[#1B4D78] text-white font-semibold text-xs rounded-lg flex items-center space-x-1.5 shadow-soft cursor-pointer disabled:opacity-50"
+                className="px-6 py-2.5 bg-[#123B5D] hover:bg-[#1B4D78] text-white font-semibold text-xs rounded-lg flex items-center justify-center space-x-1.5 shadow-soft cursor-pointer disabled:opacity-50 min-h-[44px]"
               >
                 <Send className="w-3.5 h-3.5 text-[#E8B84A]" />
                 <span>{submitting ? t('submittingGrievanceBtn', language) : t('submitGrievanceBtn', language)}</span>
@@ -212,7 +212,7 @@ export const GrievancePage: React.FC = () => {
       )}
 
       {/* Grievances List / My Grievances */}
-      <div className="soft-card p-6 sm:p-8 space-y-4">
+      <div className="soft-card p-4 sm:p-8 space-y-4">
         <div className="flex items-center justify-between border-b border-[#DDE6EC] pb-3">
           <h2 className="text-base font-bold text-[#123B5D]">
             {t('myGrievancesListTitle', language)} ({grievances.length})

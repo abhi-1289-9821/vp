@@ -71,16 +71,16 @@ export const ActionCenterPage: React.FC = () => {
             return (
               <div
                 key={act.id}
-                className={`soft-card p-5 sm:p-6 transition ${
+                className={`soft-card p-4 sm:p-6 transition ${
                   isDone
                     ? 'opacity-80 bg-[#F8FAFC]'
                     : 'border-[#E8B84A]/60 shadow-soft'
                 }`}
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                   <div className="space-y-2 max-w-3xl">
-                    <div className="flex items-center space-x-3">
-                      <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold font-mono ${
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold font-mono shrink-0 ${
                         isDone
                           ? 'bg-[#E8F4EC] text-[#2E7D5B]'
                           : 'bg-[#FFF9F0] text-[#C7972D] border border-[#E8B84A]/60'
@@ -91,21 +91,21 @@ export const ActionCenterPage: React.FC = () => {
                       <StatusBadge status={act.status} />
                     </div>
 
-                    <p className="text-xs text-[#243746] leading-relaxed pl-10">
+                    <p className="text-xs text-[#243746] leading-relaxed pl-0 sm:pl-10">
                       {act.description}
                     </p>
 
                     {act.deadline && (
-                      <div className="flex items-center space-x-1.5 text-xs font-bold text-[#C62828] pl-10">
+                      <div className="flex items-center space-x-1.5 text-xs font-bold text-[#C62828] pl-0 sm:pl-10">
                         <Calendar className="w-3.5 h-3.5" />
                         <span>{t('actionDeadlineLabel', language)}: {new Date(act.deadline).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                       </div>
                     )}
                   </div>
 
-                  <div className="self-end sm:self-center shrink-0">
+                  <div className="self-start sm:self-center shrink-0 pt-2 sm:pt-0">
                     {isDone ? (
-                      <span className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#2E7D5B] bg-[#E8F4EC] px-3.5 py-2 rounded-lg border border-[#2E7D5B]/30">
+                      <span className="inline-flex items-center space-x-1.5 text-xs font-semibold text-[#2E7D5B] bg-[#E8F4EC] px-3.5 py-2.5 rounded-lg border border-[#2E7D5B]/30 min-h-[44px]">
                         <CheckCircle2 className="w-4 h-4" />
                         <span>{t('status_COMPLETED', language)}</span>
                       </span>
@@ -113,7 +113,7 @@ export const ActionCenterPage: React.FC = () => {
                       <button
                         onClick={() => handleCompleteAction(act.id)}
                         disabled={completingId === act.id}
-                        className="inline-flex items-center space-x-1.5 px-4 py-2 bg-[#123B5D] hover:bg-[#1B4D78] text-white text-xs font-semibold rounded-lg shadow-soft transition cursor-pointer disabled:opacity-50"
+                        className="inline-flex items-center justify-center space-x-1.5 px-4 py-2.5 bg-[#123B5D] hover:bg-[#1B4D78] text-white text-xs font-semibold rounded-lg shadow-soft transition cursor-pointer disabled:opacity-50 min-h-[44px]"
                       >
                         {completingId === act.id ? (
                           <span>{t('status_PENDING', language)}...</span>

@@ -401,10 +401,10 @@ export const PublicLandingPage: React.FC = () => {
           </div>
 
           {/* Primary Action Buttons */}
-          <div className="flex flex-wrap items-center gap-3 pt-1">
+          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1">
             <Link
               to="/login"
-              className="px-5 py-2.5 bg-[#047857] hover:bg-[#065F46] text-white text-xs sm:text-sm font-bold rounded-xl shadow-lg transition flex items-center space-x-2 cursor-pointer"
+              className="px-5 py-3 sm:py-2.5 bg-[#047857] hover:bg-[#065F46] text-white text-xs sm:text-sm font-bold rounded-xl shadow-lg transition flex items-center justify-center space-x-2 cursor-pointer min-h-[44px]"
             >
               <LogIn className="w-4 h-4 text-[#D97706]" />
               <span>{t('signIn', language)}</span>
@@ -413,7 +413,7 @@ export const PublicLandingPage: React.FC = () => {
 
             <Link
               to="/login?tab=register"
-              className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold rounded-xl border border-white/30 backdrop-blur-md transition flex items-center space-x-1.5 cursor-pointer"
+              className="px-4 py-3 sm:py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold rounded-xl border border-white/30 backdrop-blur-md transition flex items-center justify-center space-x-1.5 cursor-pointer min-h-[44px]"
             >
               <UserPlus className="w-4 h-4 text-[#D97706]" />
               <span>{t('registerLandowner', language)}</span>
@@ -421,7 +421,7 @@ export const PublicLandingPage: React.FC = () => {
 
             <Link
               to={activeSlide.ctaLink}
-              className="px-4 py-2.5 bg-[#D97706] hover:bg-[#B45309] text-[#2D1810] text-xs sm:text-sm font-bold rounded-xl transition flex items-center space-x-1.5 cursor-pointer"
+              className="px-4 py-3 sm:py-2.5 bg-[#D97706] hover:bg-[#B45309] text-[#2D1810] text-xs sm:text-sm font-bold rounded-xl transition flex items-center justify-center space-x-1.5 cursor-pointer min-h-[44px]"
             >
               <Compass className="w-4 h-4" />
               <span>{activeSlide.ctaText}</span>
@@ -617,7 +617,7 @@ export const PublicLandingPage: React.FC = () => {
             </div>
 
             {/* Interactive Leaflet Map Right */}
-            <div className="lg:col-span-6 bg-white border border-[#E6E2DA] rounded-3xl p-6 space-y-4 shadow-sm">
+            <div className="lg:col-span-6 bg-white border border-[#E6E2DA] rounded-3xl p-4 sm:p-6 space-y-4 shadow-sm">
               <div className="flex items-center justify-between border-b border-[#E6E2DA] pb-3">
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-lg bg-[#E8F5EC] text-[#047857] flex items-center justify-center font-bold">
@@ -705,13 +705,13 @@ export const PublicLandingPage: React.FC = () => {
       {/* ================= 4. DOCUMENT INTELLIGENCE & NOTICE OCR (WHITE BACKGROUND SECTION) ================= */}
       <section className="w-full bg-white py-14 sm:py-18 border-b border-[#E6E2DA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#F8F7F4] border border-[#E6E2DA] rounded-3xl p-6 sm:p-10 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="bg-[#F8F7F4] border border-[#E6E2DA] rounded-3xl p-4 sm:p-8 lg:p-10 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Image Left */}
             <div className="lg:col-span-5 rounded-2xl overflow-hidden border border-[#E6E2DA] shadow-md bg-white">
               <img
                 src="/images/digital_land_records.jpg"
                 alt="Digital Land Records Interface"
-                className="w-full h-64 sm:h-80 object-cover"
+                className="w-full h-56 sm:h-80 object-cover"
               />
             </div>
 
@@ -730,7 +730,7 @@ export const PublicLandingPage: React.FC = () => {
                 {t('docIntelShowcaseDesc', language)}
               </p>
 
-              <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
                 <div className="bg-white p-3.5 rounded-xl border border-[#E6E2DA]">
                   <strong className="text-[#2D1810] block mb-1">{t('instantOcrTitle', language)}</strong>
                   <span className="text-[#6B5E57]">{t('instantOcrDesc', language)}</span>
@@ -741,10 +741,10 @@ export const PublicLandingPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div className="pt-2 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
                 <Link
                   to="/documents/analyze"
-                  className="px-6 py-3 bg-[#047857] hover:bg-[#065F46] text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm transition flex items-center space-x-2 cursor-pointer"
+                  className="px-6 py-3 bg-[#047857] hover:bg-[#065F46] text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm transition flex items-center justify-center space-x-2 cursor-pointer min-h-[44px]"
                 >
                   <Sparkles className="w-4 h-4 text-[#D97706]" />
                   <span>{t('analyzeNoticeBtn', language)}</span>
@@ -752,7 +752,7 @@ export const PublicLandingPage: React.FC = () => {
                 </Link>
                 <Link
                   to="/find-land"
-                  className="px-5 py-3 bg-white hover:bg-[#F8F7F4] text-[#2D1810] text-xs sm:text-sm font-semibold rounded-xl border border-[#E6E2DA] transition"
+                  className="px-5 py-3 bg-white hover:bg-[#F8F7F4] text-[#2D1810] text-xs sm:text-sm font-semibold rounded-xl border border-[#E6E2DA] transition flex items-center justify-center min-h-[44px]"
                 >
                   {t('lookupRorBtn', language)}
                 </Link>
@@ -805,7 +805,7 @@ export const PublicLandingPage: React.FC = () => {
               <div className="pt-2">
                 <Link
                   to="/compensation"
-                  className="px-6 py-3 bg-[#047857] hover:bg-[#065F46] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md transition inline-flex items-center space-x-2"
+                  className="px-6 py-3 bg-[#047857] hover:bg-[#065F46] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md transition inline-flex items-center space-x-2 min-h-[44px]"
                 >
                   <span>{t('openCompCalcBtn', language)}</span>
                   <ArrowRight className="w-4 h-4 text-[#D97706]" />
@@ -814,7 +814,7 @@ export const PublicLandingPage: React.FC = () => {
             </div>
 
             {/* Compensation Card Right */}
-            <div className="lg:col-span-6 bg-white border border-[#E6E2DA] rounded-3xl p-6 space-y-4 shadow-sm">
+            <div className="lg:col-span-6 bg-white border border-[#E6E2DA] rounded-3xl p-4 sm:p-6 space-y-4 shadow-sm">
               <div className="flex items-center justify-between border-b border-[#E6E2DA] pb-3">
                 <h3 className="text-sm font-bold text-[#2D1810]">
                   {t('sampleCompCalcTitle', language)} (#1042)
@@ -837,13 +837,13 @@ export const PublicLandingPage: React.FC = () => {
                   <span className="text-[#D97706] font-semibold">+ {t('rrGrantLabel', language)}:</span>
                   <span className="font-bold text-[#D97706] font-mono">+₹5,00,000</span>
                 </div>
-                <div className="flex justify-between p-4 bg-[#047857] text-white rounded-xl shadow-sm">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 p-4 bg-[#047857] text-white rounded-xl shadow-sm">
                   <div>
                     <span className="text-xs text-slate-200 block">{t('totalStatutoryEntitlement', language)}:</span>
                     <span className="text-xl font-black font-mono">₹38,40,000</span>
                   </div>
-                  <div className="text-right">
-                    <span className="text-[10px] bg-white text-[#047857] px-2 py-0.5 rounded font-bold uppercase block">
+                  <div className="sm:text-right">
+                    <span className="text-[10px] bg-white text-[#047857] px-2 py-0.5 rounded font-bold uppercase inline-block">
                       {t('directDbtBadge', language)}
                     </span>
                     <span className="text-[11px] text-slate-200 mt-1 block">{t('pfmsLinked', language)}</span>

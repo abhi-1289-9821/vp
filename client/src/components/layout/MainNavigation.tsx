@@ -94,25 +94,27 @@ export const MainNavigation: React.FC<MainNavigationProps> = ({ unreadCount = 0 
 
           {/* Mobile Bar View (Title + Hamburger) */}
           <div className="flex md:hidden items-center justify-between w-full h-full">
-            <span className="text-xs font-bold tracking-wider text-[#E8B84A] uppercase">
+            <span className="text-xs font-bold tracking-wider text-[#E8B84A] uppercase truncate max-w-[200px] sm:max-w-none">
               {user?.role === 'OFFICER' ? t('officerPortal', language) : t('citizenServices', language)}
             </span>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1 sm:space-x-2">
               <NavLink
                 to="/notifications"
-                className="relative p-1.5 text-slate-200 hover:text-white"
+                className="relative p-2 min-w-[36px] min-h-[36px] flex items-center justify-center text-slate-200 hover:text-white"
+                aria-label={t('notifications', language)}
               >
                 <Bell className="w-4 h-4 text-[#E8B84A]" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-0 right-0 w-2 h-2 bg-[#C62828] rounded-full"></span>
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-[#C62828] rounded-full"></span>
                 )}
               </NavLink>
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-1.5 rounded text-slate-200 hover:text-white hover:bg-[#1B4D78] transition cursor-pointer"
+                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md text-slate-200 hover:text-white hover:bg-[#1B4D78] transition cursor-pointer"
                 aria-label="Toggle Navigation Menu"
+                aria-expanded={mobileMenuOpen}
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -123,7 +125,7 @@ export const MainNavigation: React.FC<MainNavigationProps> = ({ unreadCount = 0 
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0C2840] border-t border-[#1B4D78] px-4 py-3 space-y-1 animate-in slide-in-from-top-2 duration-150">
+        <div className="md:hidden bg-[#0C2840] border-t border-[#1B4D78] px-3 py-2 space-y-1 max-h-[calc(100vh-140px)] overflow-y-auto shadow-xl animate-in slide-in-from-top-2 duration-150">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -131,17 +133,38 @@ export const MainNavigation: React.FC<MainNavigationProps> = ({ unreadCount = 0 
               end={item.to === '/' || item.to === '/officer'}
               onClick={() => setMobileMenuOpen(false)}
               className={({ isActive }) =>
-                `flex items-center space-x-2.5 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide uppercase transition ${
+                `flex items-center space-x-3 px-3.5 min-h-[44px] rounded-lg text-xs font-semibold tracking-wide uppercase transition ${
                   isActive
-                    ? 'bg-[#123B5D] text-[#E8B84A] font-bold'
+                    ? 'bg-[#123B5D] text-[#E8B84A] font-bold border-l-4 border-[#E8B84A]'
                     : 'text-slate-300 hover:bg-[#123B5D]/60 hover:text-white'
                 }`
               }
             >
-              <item.icon className="w-4 h-4 text-[#E8B84A]" />
-              <span>{item.label}</span>
+              <item.icon className="w-4 h-4 text-[#E8B84A] flex-shrink-0" />
+              <span className="truncate">{item.label}</span>
             </NavLink>
           ))}
+          <NavLink
+            to="/notifications"
+            onClick={() => setMobileMenuOpen(false)}
+            className={({ isActive }) =>
+              `flex items-center justify-between px-3.5 min-h-[44px] rounded-lg text-xs font-semibold tracking-wide uppercase transition ${
+                isActive
+                  ? 'bg-[#123B5D] text-[#E8B84A] font-bold border-l-4 border-[#E8B84A]'
+                  : 'text-slate-300 hover:bg-[#123B5D]/60 hover:text-white'
+              }`
+            }
+          >
+            <div className="flex items-center space-x-3">
+              <Bell className="w-4 h-4 text-[#E8B84A] flex-shrink-0" />
+              <span>{t('notifications', language)}</span>
+            </div>
+            {unreadCount > 0 && (
+              <span className="bg-[#C62828] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                {unreadCount}
+              </span>
+            )}
+          </NavLink>
         </div>
       )}
     </nav>

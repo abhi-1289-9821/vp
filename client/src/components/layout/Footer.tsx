@@ -140,28 +140,28 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* GIGW Policy & Compliance Link Bar */}
-      <div className="border-t border-[#1B4D78] bg-[#0E3352]/70 py-2.5">
+      <div className="border-t border-[#1B4D78] bg-[#0E3352]/70 py-3">
         <nav
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs text-slate-300"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-5 gap-y-2 text-xs text-slate-300"
           aria-label="Statutory and Policy Navigation"
         >
-          <Link to="/privacy-policy" className="hover:text-[#E8B84A] transition">
+          <Link to="/privacy-policy" className="hover:text-[#E8B84A] py-1 transition">
             {t('footerPrivacyPolicy', language)}
           </Link>
           <span className="text-slate-500 hidden sm:inline">•</span>
-          <Link to="/terms-and-conditions" className="hover:text-[#E8B84A] transition">
+          <Link to="/terms-and-conditions" className="hover:text-[#E8B84A] py-1 transition">
             {t('footerTermsConditions', language)}
           </Link>
           <span className="text-slate-500 hidden sm:inline">•</span>
-          <Link to="/accessibility" className="hover:text-[#E8B84A] transition">
+          <Link to="/accessibility" className="hover:text-[#E8B84A] py-1 transition">
             {t('footerAccessibility', language)}
           </Link>
           <span className="text-slate-500 hidden sm:inline">•</span>
-          <Link to="/contact-us" className="hover:text-[#E8B84A] transition">
+          <Link to="/contact-us" className="hover:text-[#E8B84A] py-1 transition">
             {t('footerContactUs', language)}
           </Link>
           <span className="text-slate-500 hidden sm:inline">•</span>
-          <Link to="/feedback" className="hover:text-[#E8B84A] transition">
+          <Link to="/feedback" className="hover:text-[#E8B84A] py-1 transition">
             {t('footerFeedback', language)}
           </Link>
         </nav>
