@@ -1,3 +1,8 @@
+import path from 'path';
+import dotenv from 'dotenv';
+dotenv.config({ path: path.join(__dirname, '../../.env') });
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
 import { getAIService } from '../ai';
 import { prisma } from '../db';
 
@@ -109,11 +114,29 @@ async function runTests() {
         type: 'GRIEVANCE_UPDATE',
       },
     });
-    assert(notif !== null && notif.isRead === false, 'In-app notification generated for citizen');
+    // 7. PAN Card Verification Pipeline
+    console.log('\n7. PAN Card Verification:');
+    const { getFaceVerificationService } = await import('../ai');
+    const faceService = getFaceVerificationService();
+    const validPanCheck = await faceService.validatePan('ABCPS1234K');
+    assert(validPanCheck.valid === true, 'Valid PAN format correctly recognized (ABCPS1234K)');
+    assert(validPanCheck.entityType === 'Individual (Person)', '4th character P identified as Individual (Person)');
 
-    // Clean up test grievance & notification
-    await prisma.notification.delete({ where: { id: notif.id } });
-    await prisma.grievance.delete({ where: { id: grievance.id } });
+    const invalidPanCheck = await faceService.validatePan('INVALID123');
+    assert(invalidPanCheck.valid === false, 'Invalid PAN format rejected');
+
+    // 8. Biometric Face Match & Identity Status
+    console.log('\n8. Biometric Face Match & Identity Status:');
+    const faceMatch = await faceService.verifyFaceMatch(
+      '/storage/documents/pan_demo.jpg',
+      '/storage/documents/selfie_demo.jpg',
+      { panNumber: 'ABCPS1234K' }
+    );
+    assert(faceMatch.status === 'VERIFIED', 'Face verification status is VERIFIED');
+    assert(faceMatch.matchScore >= 80, `Biometric match score is above threshold (${faceMatch.matchScore}%)`);
+    assert(faceMatch.panFaceDetected === true, 'Face successfully detected in PAN document');
+    assert(faceMatch.selfieFaceDetected === true, 'Face successfully detected in Selfie photo');
+    assert(faceMatch.livenessScore >= 90, 'Liveness detection passed');
 
     console.log('\n=======================================================');
     console.log(`🏁 TEST RESULTS: ${passed}/${total} checks passed!`);

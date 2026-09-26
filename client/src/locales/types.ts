@@ -756,4 +756,71 @@ export interface TranslationSchema {
   sec30FinalAward: string;
   membersOnRecord: string;
   aadhaarNpciActive: string;
+
+  // Registration Flow Steps & PAN / Biometric Verification
+  regStep1Title: string;
+  regStep2Title: string;
+  regStep3Title: string;
+  regStep4Title: string;
+  regStep5Title: string;
+  regStep6Title: string;
+  regStep1Desc: string;
+  regStep2Desc: string;
+  regStep3Desc: string;
+  regStep4Desc: string;
+  regStep5Desc: string;
+  regStep6Desc: string;
+
+  panNumberLabel: string;
+  panNumberPlaceholder: string;
+  panValidationSuccess: string;
+  panValidationFailed: string;
+  panEntityIndividual: string;
+  panUploadTitle: string;
+  panUploadInstructions: string;
+  panUploadDropzone: string;
+  panUploadChange: string;
+  panFormatHelp: string;
+
+  selfieStepTitle: string;
+  selfieInstructions: string;
+  selfieCaptureTab: string;
+  selfieUploadTab: string;
+  selfieCameraStart: string;
+  selfieCameraCapturing: string;
+  selfieCameraRetake: string;
+  selfieCaptureBtn: string;
+  selfieCameraPermissionError: string;
+  selfieAlignFacePrompt: string;
+
+  faceVerificationTitle: string;
+  faceVerificationRunning: string;
+  faceVerificationScanning: string;
+  faceMatchScoreLabel: string;
+  faceMatchStatusVerified: string;
+  faceMatchStatusManual: string;
+  faceMatchStatusFailed: string;
+  faceCheckPanDetected: string;
+  faceCheckSelfieDetected: string;
+  faceCheckLiveness: string;
+  faceCheckLandmarks: string;
+
+  regCompleteTitle: string;
+  regCompleteSub: string;
+  regCompleteCardTitle: string;
+  regCompleteEnterDashboard: string;
+  regNextStepBtn: string;
+  regPrevStepBtn: string;
+  regVerifyBtn: string;
+
+  // Dashboard Identity Verification Status
+  dashboardIdentityTitle: string;
+  dashboardPanVerifiedBadge: string;
+  dashboardFaceVerifiedBadge: string;
+  dashboardVerificationPendingBadge: string;
+  dashboardManualReviewBadge: string;
+  dashboardIdentityVerifiedSub: string;
+  dashboardIdentityPendingSub: string;
+  dashboardViewVerificationDetails: string;
 }
+

@@ -275,13 +275,42 @@ export const CitizenHomePage: React.FC = () => {
               <p className="text-xs sm:text-sm text-[#6B5E57] flex flex-wrap items-center gap-2">
                 <span className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5 text-[#047857]" />
-                  <span>{t('village', language)} <strong>{parcel?.village || 'Rampur'}</strong>, {t('tehsil', language)} <strong>{parcel?.district || 'Bhopal'}</strong></span>
+                  <span>{t('village', language)} <strong>{parcel?.village || user?.profile?.village || 'Rampur'}</strong>, {t('tehsil', language)} <strong>{parcel?.district || user?.profile?.district || 'Bhopal'}</strong></span>
                 </span>
                 <span>•</span>
                 <span>{t('surveyParcelLabel', language)}: <strong className="text-[#047857] font-mono">#{parcel?.surveyNumber || '1042'}</strong></span>
                 <span>•</span>
                 <span>{t('recordedArea', language)}: <strong className="text-[#2D1810] font-mono">{parcel?.recordedAreaHa || '2.43'} Ha (6.00 Acres)</strong></span>
               </p>
+            </div>
+
+            {/* Identity & Biometric Verification Status Strip */}
+            <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#E8F5E9] border border-[#047857]/30 text-[#047857] font-bold">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>
+                  {user?.profile?.panStatus === 'VERIFIED'
+                    ? `${t('dashboardPanVerifiedBadge', language)} (${user.profile.panNumber ? `${user.profile.panNumber.slice(0, 5)}****${user.profile.panNumber.slice(9)}` : 'ABCPS****K'})`
+                    : user?.profile?.panStatus === 'REJECTED'
+                    ? 'PAN Rejected'
+                    : t('dashboardVerificationPendingBadge', language)}
+                </span>
+              </div>
+
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#E8F5E9] border border-[#047857]/30 text-[#047857] font-bold">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>
+                  {user?.profile?.faceMatchStatus === 'VERIFIED'
+                    ? `${t('dashboardFaceVerifiedBadge', language)} (${user.profile.faceMatchScore || 96.5}% Match)`
+                    : user?.profile?.faceMatchStatus === 'MANUAL_REVIEW'
+                    ? t('dashboardManualReviewBadge', language)
+                    : t('dashboardVerificationPendingBadge', language)}
+                </span>
+              </div>
+
+              <span className="text-[11px] text-[#6B5E57] hidden sm:inline">
+                • {t('dashboardIdentityVerifiedSub', language)}
+              </span>
             </div>
           </div>
 

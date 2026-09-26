@@ -13,11 +13,44 @@ export interface CitizenProfile {
   id: string;
   userId: string;
   aadhaarMasked?: string;
+  panNumber?: string;
+  panDocumentUrl?: string;
+  panStatus?: 'PENDING' | 'VERIFIED' | 'REJECTED';
+  selfieUrl?: string;
+  faceMatchScore?: number;
+  faceMatchStatus?: 'PENDING' | 'VERIFIED' | 'MANUAL_REVIEW' | 'FAILED';
   village?: string;
   tehsil?: string;
   district?: string;
   state?: string;
   preferredLanguage: string;
+}
+
+export interface PanValidationResult {
+  valid: boolean;
+  panNumber: string;
+  entityType?: string;
+  message: string;
+}
+
+export interface FaceVerificationResult {
+  matchScore: number;
+  status: 'VERIFIED' | 'MANUAL_REVIEW' | 'FAILED';
+  isMatch: boolean;
+  panFaceDetected: boolean;
+  selfieFaceDetected: boolean;
+  livenessScore: number;
+  confidence: number;
+  message: string;
+  details?: {
+    faceQualityScore?: number;
+    landmarkAlignmentScore?: number;
+    lightingScore?: number;
+    matchThreshold?: number;
+    reviewReason?: string;
+  };
+  panDocumentUrl?: string;
+  selfieUrl?: string;
 }
 
 export interface Project {

@@ -3,8 +3,9 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { prisma } from '../db';
 import { generateToken } from '../utils/jwt';
-import { ConflictError, UnauthorizedError } from '../utils/errors';
+import { ConflictError, UnauthorizedError, BadRequestError } from '../utils/errors';
 import { logger } from '../utils/logger';
+import { getFaceVerificationService } from '../ai';
 
 const registerSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -14,12 +15,73 @@ const registerSchema = z.object({
   village: z.string().optional(),
   district: z.string().optional(),
   aadhaarMasked: z.string().optional(),
+  panNumber: z.string().optional(),
+  panDocumentUrl: z.string().optional(),
+  panStatus: z.string().optional(),
+  selfieUrl: z.string().optional(),
+  faceMatchScore: z.number().optional(),
+  faceMatchStatus: z.string().optional(),
 });
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(1, 'Password is required'),
 });
+
+export async function verifyPan(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { panNumber } = req.body;
+    if (!panNumber || typeof panNumber !== 'string') {
+      throw new BadRequestError('PAN number is required', 'INVALID_PAN');
+    }
+
+    const faceService = getFaceVerificationService();
+    const result = await faceService.validatePan(panNumber);
+
+    return res.json({
+      success: true,
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function verifyFace(req: Request, res: Response, next: NextFunction) {
+  try {
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+    const panFile = files?.['panDocument']?.[0];
+    const selfieFile = files?.['selfie']?.[0];
+
+    // Alternatively, support JSON file paths if already uploaded
+    const panDocumentUrl = req.body.panDocumentUrl || (panFile ? `/storage/documents/${panFile.filename}` : undefined);
+    const selfieUrl = req.body.selfieUrl || (selfieFile ? `/storage/documents/${selfieFile.filename}` : undefined);
+    const panNumber = req.body.panNumber;
+
+    if (!panDocumentUrl || !selfieUrl) {
+      throw new BadRequestError('Both PAN Card image and Selfie photo are required for face verification', 'MISSING_VERIFICATION_FILES');
+    }
+
+    const faceService = getFaceVerificationService();
+    const result = await faceService.verifyFaceMatch(
+      panFile?.path || panDocumentUrl,
+      selfieFile?.path || selfieUrl,
+      { panNumber }
+    );
+
+    return res.json({
+      success: true,
+      message: result.message,
+      data: {
+        ...result,
+        panDocumentUrl,
+        selfieUrl,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 
 export async function register(req: Request, res: Response, next: NextFunction) {
   try {
@@ -48,6 +110,12 @@ export async function register(req: Request, res: Response, next: NextFunction) 
             village: data.village || 'Rampur',
             district: data.district || 'Bhopal',
             aadhaarMasked: data.aadhaarMasked || 'XXXX-XXXX-8921',
+            panNumber: data.panNumber ? data.panNumber.toUpperCase() : undefined,
+            panDocumentUrl: data.panDocumentUrl,
+            panStatus: data.panStatus || (data.panNumber ? 'VERIFIED' : 'PENDING'),
+            selfieUrl: data.selfieUrl,
+            faceMatchScore: data.faceMatchScore,
+            faceMatchStatus: data.faceMatchStatus || (data.faceMatchScore ? 'VERIFIED' : 'PENDING'),
           },
         },
       },

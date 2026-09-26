@@ -38,6 +38,12 @@ model CitizenProfile {
   userId            String   @unique
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   aadhaarMasked     String? // e.g. "XXXX-XXXX-8921"
+  panNumber         String? // e.g. "ABCDE1234F"
+  panDocumentUrl    String? // path to uploaded PAN card document/photo
+  panStatus         String   @default("PENDING") // PENDING, VERIFIED, REJECTED
+  selfieUrl         String? // path to uploaded selfie/live capture
+  faceMatchScore    Float?   // e.g. 94.5
+  faceMatchStatus   String   @default("PENDING") // PENDING, VERIFIED, MANUAL_REVIEW, FAILED
   village           String?
   tehsil            String?
   district          String?
@@ -48,6 +54,7 @@ model CitizenProfile {
 
   @@index([village])
   @@index([district])
+  @@index([panNumber])
 }
 
 model Project {

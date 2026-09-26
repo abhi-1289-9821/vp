@@ -14,6 +14,18 @@ export const authApi = {
     }),
 
   getMe: () => fetchWithAuth('/auth/me'),
+
+  verifyPan: (panNumber: string) =>
+    fetchWithAuth('/auth/verify-pan', {
+      method: 'POST',
+      body: JSON.stringify({ panNumber }),
+    }),
+
+  verifyFace: (formData: FormData) =>
+    fetchWithAuth('/auth/verify-face', {
+      method: 'POST',
+      body: formData,
+    }),
 };
 
 export const citizenApi = {

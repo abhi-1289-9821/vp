@@ -35,6 +35,12 @@ async function main() {
       profile: {
         create: {
           aadhaarMasked: 'XXXX-XXXX-8921',
+          panNumber: 'ABCPS1234K',
+          panDocumentUrl: '/storage/documents/pan_demo.jpg',
+          panStatus: 'VERIFIED',
+          selfieUrl: '/storage/documents/selfie_demo.jpg',
+          faceMatchScore: 96.5,
+          faceMatchStatus: 'VERIFIED',
           village: 'Rampur',
           tehsil: 'Huzur',
           district: 'Bhopal',

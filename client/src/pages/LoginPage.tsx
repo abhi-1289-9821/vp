@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore.js';
 import { api } from '../services/api.js';
-import { ArrowRight, UserCheck } from 'lucide-react';
+import { ArrowRight, UserCheck, Phone, MapPin } from 'lucide-react';
 import { t } from '../lib/i18n.js';
+import { RegistrationStepper } from '../components/auth/RegistrationStepper.js';
+import { PanVerificationStep } from '../components/auth/PanVerificationStep.js';
+import { FaceVerificationStep } from '../components/auth/FaceVerificationStep.js';
+import { RegistrationCompleteStep } from '../components/auth/RegistrationCompleteStep.js';
+import { FaceVerificationResult } from '../types/index.js';
 
 export const LoginPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -17,13 +22,23 @@ export const LoginPage: React.FC = () => {
       setIsRegister(false);
     }
   }, [searchParams]);
+
+  // Login / Step 1 State
   const [email, setEmail] = useState('citizen@sahaay.demo');
   const [password, setPassword] = useState('password123');
   const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [village, setVillage] = useState('Rampur');
   const [district, setDistrict] = useState('Bhopal');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Multi-step Registration State (Steps 1 to 6)
+  const [regStep, setRegStep] = useState<number>(1);
+  const [panNumber, setPanNumber] = useState('ABCPS1234K');
+  const [panFile, setPanFile] = useState<File | null>(null);
+  const [selfieFile, setSelfieFile] = useState<File | Blob | null>(null);
+  const [verificationResult, setVerificationResult] = useState<FaceVerificationResult | null>(null);
 
   const { setAuth, language } = useAuthStore();
   const navigate = useNavigate();
@@ -34,22 +49,56 @@ export const LoginPage: React.FC = () => {
     setLoading(true);
 
     try {
-      if (isRegister) {
-        const res = await api.register({ email, password, name, village, district });
-        if (res.success) {
-          setAuth(res.data.token, res.data.user);
+      const res = await api.login({ email, password });
+      if (res.success) {
+        setAuth(res.data.token, res.data.user);
+        if (res.data.user.role === 'OFFICER') {
+          navigate('/officer');
+        } else {
           navigate('/');
         }
-      } else {
-        const res = await api.login({ email, password });
-        if (res.success) {
-          setAuth(res.data.token, res.data.user);
-          if (res.data.user.role === 'OFFICER') {
-            navigate('/officer');
-          } else {
-            navigate('/');
-          }
-        }
+      }
+    } catch (err: any) {
+      setError(err.message || t('authFailedError', language));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStep1Submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      setError('Please fill in all required basic information fields.');
+      return;
+    }
+    setRegStep(2);
+  };
+
+  const handleFinalRegister = async () => {
+    setError('');
+    setLoading(true);
+
+    try {
+      const payload: any = {
+        email: email.trim(),
+        password,
+        name: name.trim(),
+        phone: phone.trim() || undefined,
+        village: village.trim(),
+        district: district.trim(),
+        panNumber: panNumber.trim().toUpperCase(),
+        panDocumentUrl: verificationResult?.panDocumentUrl || '/storage/documents/pan_demo.jpg',
+        panStatus: 'VERIFIED',
+        selfieUrl: verificationResult?.selfieUrl || '/storage/documents/selfie_demo.jpg',
+        faceMatchScore: verificationResult?.matchScore || 96.5,
+        faceMatchStatus: verificationResult?.status || 'VERIFIED',
+      };
+
+      const res = await api.register(payload);
+      if (res.success) {
+        setAuth(res.data.token, res.data.user);
+        navigate('/');
       }
     } catch (err: any) {
       setError(err.message || t('authFailedError', language));
@@ -60,6 +109,7 @@ export const LoginPage: React.FC = () => {
 
   const populateDemoUser = (role: 'CITIZEN' | 'OFFICER' | 'ADMIN') => {
     setIsRegister(false);
+    setRegStep(1);
     if (role === 'CITIZEN') {
       setEmail('citizen@sahaay.demo');
       setPassword('password123');
@@ -166,7 +216,10 @@ export const LoginPage: React.FC = () => {
           <div className="bg-white rounded-xl border border-[#DDE6EC] overflow-hidden">
             <div className="flex border-b border-[#DDE6EC] bg-[#F8FAFC]">
               <button
-                onClick={() => { setIsRegister(false); setError(''); }}
+                onClick={() => {
+                  setIsRegister(false);
+                  setError('');
+                }}
                 className={`flex-1 text-center py-2.5 text-xs font-bold transition cursor-pointer ${
                   !isRegister
                     ? 'bg-white text-[#123B5D] border-t-2 border-t-[#123B5D]'
@@ -176,7 +229,10 @@ export const LoginPage: React.FC = () => {
                 {t('tabSignIn', language)}
               </button>
               <button
-                onClick={() => { setIsRegister(true); setError(''); }}
+                onClick={() => {
+                  setIsRegister(true);
+                  setError('');
+                }}
                 className={`flex-1 text-center py-2.5 text-xs font-bold transition cursor-pointer ${
                   isRegister
                     ? 'bg-white text-[#123B5D] border-t-2 border-t-[#123B5D]'
@@ -194,88 +250,233 @@ export const LoginPage: React.FC = () => {
                 </div>
               )}
 
-              <form onSubmit={handleLogin} className="space-y-4">
-                {isRegister && (
-                  <>
-                    <div>
-                      <label className="block text-xs font-semibold text-[#123B5D] mb-1">
-                        {t('fullNameLabel', language)}
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder={t('fullNamePlaceholder', language)}
-                        className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs sm:text-sm font-medium bg-[#F8FAFC] text-[#243746] focus:outline-none focus:border-[#123B5D]"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
+              {/* SIGN-IN TAB */}
+              {!isRegister ? (
+                <form onSubmit={handleLogin} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-[#123B5D] mb-1">
+                      {t('emailLabel', language)}
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder={t('emailPlaceholder', language)}
+                      className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs sm:text-sm font-medium bg-[#F8FAFC] text-[#243746] focus:outline-none focus:border-[#123B5D]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-[#123B5D] mb-1">
+                      {t('passwordLabel', language)}
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder={t('passwordPlaceholder', language)}
+                      className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs sm:text-sm font-medium bg-[#F8FAFC] text-[#243746] focus:outline-none focus:border-[#123B5D]"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full min-h-[46px] bg-[#123B5D] hover:bg-[#1B4D78] active:bg-[#0C2840] text-white font-semibold text-xs sm:text-sm rounded-lg shadow-soft transition flex items-center justify-center space-x-2 disabled:opacity-70 mt-2 cursor-pointer"
+                  >
+                    {loading ? (
+                      <span>{t('verifyingBtn', language)}</span>
+                    ) : (
+                      <>
+                        <span>{t('signInBtn', language)}</span>
+                        <ArrowRight className="w-4 h-4 text-[#E8B84A]" />
+                      </>
+                    )}
+                  </button>
+                </form>
+              ) : (
+                /* REGISTRATION TAB: 6-STEP FLOW */
+                <div>
+                  <RegistrationStepper currentStep={regStep} language={language} />
+
+                  {/* STEP 1: Basic Information */}
+                  {regStep === 1 && (
+                    <form onSubmit={handleStep1Submit} className="space-y-4 animate-fadeIn">
+                      <div className="space-y-1">
+                        <h3 className="text-sm font-bold text-[#123B5D]">{t('regStep1Title', language)}</h3>
+                        <p className="text-xs text-[#64748B]">{t('regStep1Desc', language)}</p>
+                      </div>
+
                       <div>
-                        <label className="block text-xs font-semibold text-[#123B5D] mb-1">{t('villageLabel', language)}</label>
+                        <label className="block text-xs font-semibold text-[#123B5D] mb-1">
+                          {t('fullNameLabel', language)} <span className="text-[#C62828]">*</span>
+                        </label>
                         <input
                           type="text"
-                          value={village}
-                          onChange={(e) => setVillage(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs font-medium bg-[#F8FAFC] text-[#243746]"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder={t('fullNamePlaceholder', language)}
+                          className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs sm:text-sm font-medium bg-[#F8FAFC] text-[#243746] focus:outline-none focus:border-[#123B5D]"
                         />
                       </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-semibold text-[#123B5D] mb-1">
+                            {t('villageLabel', language)}
+                          </label>
+                          <input
+                            type="text"
+                            value={village}
+                            onChange={(e) => setVillage(e.target.value)}
+                            className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs font-medium bg-[#F8FAFC] text-[#243746]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-[#123B5D] mb-1">
+                            {t('districtLabel', language)}
+                          </label>
+                          <input
+                            type="text"
+                            value={district}
+                            onChange={(e) => setDistrict(e.target.value)}
+                            className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs font-medium bg-[#F8FAFC] text-[#243746]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-semibold text-[#123B5D] mb-1">
+                            {t('emailLabel', language)} <span className="text-[#C62828]">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder={t('emailPlaceholder', language)}
+                            className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs sm:text-sm font-medium bg-[#F8FAFC] text-[#243746] focus:outline-none focus:border-[#123B5D]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-[#123B5D] mb-1">
+                            Phone Number
+                          </label>
+                          <input
+                            type="tel"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            placeholder="+91 98XXX XXXXX"
+                            className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs sm:text-sm font-medium bg-[#F8FAFC] text-[#243746] focus:outline-none focus:border-[#123B5D]"
+                          />
+                        </div>
+                      </div>
+
                       <div>
-                        <label className="block text-xs font-semibold text-[#123B5D] mb-1">{t('districtLabel', language)}</label>
+                        <label className="block text-xs font-semibold text-[#123B5D] mb-1">
+                          {t('passwordLabel', language)} <span className="text-[#C62828]">*</span>
+                        </label>
                         <input
-                          type="text"
-                          value={district}
-                          onChange={(e) => setDistrict(e.target.value)}
-                          className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs font-medium bg-[#F8FAFC] text-[#243746]"
+                          type="password"
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder={t('passwordPlaceholder', language)}
+                          className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs sm:text-sm font-medium bg-[#F8FAFC] text-[#243746] focus:outline-none focus:border-[#123B5D]"
                         />
                       </div>
-                    </div>
-                  </>
-                )}
 
-                <div>
-                  <label className="block text-xs font-semibold text-[#123B5D] mb-1">
-                    {t('emailLabel', language)}
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={t('emailPlaceholder', language)}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs sm:text-sm font-medium bg-[#F8FAFC] text-[#243746] focus:outline-none focus:border-[#123B5D]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-[#123B5D] mb-1">
-                    {t('passwordLabel', language)}
-                  </label>
-                  <input
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder={t('passwordPlaceholder', language)}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-[#DDE6EC] text-xs sm:text-sm font-medium bg-[#F8FAFC] text-[#243746] focus:outline-none focus:border-[#123B5D]"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full min-h-[46px] bg-[#123B5D] hover:bg-[#1B4D78] active:bg-[#0C2840] text-white font-semibold text-xs sm:text-sm rounded-lg shadow-soft transition flex items-center justify-center space-x-2 disabled:opacity-70 mt-2 cursor-pointer"
-                >
-                  {loading ? (
-                    <span>{t('verifyingBtn', language)}</span>
-                  ) : (
-                    <>
-                      <span>{isRegister ? t('createAccountBtn', language) : t('signInBtn', language)}</span>
-                      <ArrowRight className="w-4 h-4 text-[#E8B84A]" />
-                    </>
+                      <button
+                        type="submit"
+                        className="w-full py-3 bg-[#123B5D] hover:bg-[#1B4D78] active:bg-[#0C2840] text-white font-semibold text-xs sm:text-sm rounded-lg shadow-soft transition flex items-center justify-center space-x-2 mt-2 cursor-pointer"
+                      >
+                        <span>{t('regNextStepBtn', language)}</span>
+                        <ArrowRight className="w-4 h-4 text-[#E8B84A]" />
+                      </button>
+                    </form>
                   )}
-                </button>
-              </form>
+
+                  {/* STEP 2: PAN Details */}
+                  {regStep === 2 && (
+                    <PanVerificationStep
+                      step={2}
+                      panNumber={panNumber}
+                      setPanNumber={setPanNumber}
+                      panFile={panFile}
+                      setPanFile={setPanFile}
+                      language={language}
+                      onNext={() => setRegStep(3)}
+                      onBack={() => setRegStep(1)}
+                    />
+                  )}
+
+                  {/* STEP 3: PAN Document Upload */}
+                  {regStep === 3 && (
+                    <PanVerificationStep
+                      step={3}
+                      panNumber={panNumber}
+                      setPanNumber={setPanNumber}
+                      panFile={panFile}
+                      setPanFile={setPanFile}
+                      language={language}
+                      onNext={() => setRegStep(4)}
+                      onBack={() => setRegStep(2)}
+                    />
+                  )}
+
+                  {/* STEP 4: Live Selfie Capture / Upload */}
+                  {regStep === 4 && (
+                    <FaceVerificationStep
+                      step={4}
+                      panFile={panFile}
+                      selfieFile={selfieFile}
+                      setSelfieFile={setSelfieFile}
+                      verificationResult={verificationResult}
+                      setVerificationResult={setVerificationResult}
+                      language={language}
+                      panNumber={panNumber}
+                      onNext={() => setRegStep(5)}
+                      onBack={() => setRegStep(3)}
+                    />
+                  )}
+
+                  {/* STEP 5: Biometric Face Match Check */}
+                  {regStep === 5 && (
+                    <FaceVerificationStep
+                      step={5}
+                      panFile={panFile}
+                      selfieFile={selfieFile}
+                      setSelfieFile={setSelfieFile}
+                      verificationResult={verificationResult}
+                      setVerificationResult={setVerificationResult}
+                      language={language}
+                      panNumber={panNumber}
+                      onNext={() => setRegStep(6)}
+                      onBack={() => setRegStep(4)}
+                    />
+                  )}
+
+                  {/* STEP 6: Registration & Identity Complete */}
+                  {regStep === 6 && (
+                    <RegistrationCompleteStep
+                      name={name}
+                      email={email}
+                      panNumber={panNumber}
+                      village={village}
+                      district={district}
+                      selfieFile={selfieFile}
+                      verificationResult={verificationResult}
+                      language={language}
+                      onEnterDashboard={handleFinalRegister}
+                      loading={loading}
+                    />
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
