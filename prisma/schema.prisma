@@ -1,0 +1,300 @@
+// SAHAAY Prisma Schema
+// Citizen-First Land Acquisition Companion
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String            @id @default(cuid())
+  email         String            @unique
+  passwordHash  String
+  name          String
+  role          String            @default("CITIZEN") // CITIZEN, OFFICER, ADMIN
+  phone         String?
+  designation   String? // for officers
+  department    String? // for officers
+  profile       CitizenProfile?
+  cases         AcquisitionCase[] @relation("CitizenCases")
+  documents     Document[]        @relation("UploadedDocuments")
+  grievances    Grievance[]       @relation("CitizenGrievances")
+  notifications Notification[]
+  actionItems   ActionItem[]      @relation("CitizenActionItems")
+  auditLogs     AuditLog[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+model CitizenProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aadhaarMasked     String? // e.g. "XXXX-XXXX-8921"
+  village           String?
+  tehsil            String?
+  district          String?
+  state             String?  @default("Madhya Pradesh")
+  preferredLanguage String   @default("en") // "en" | "hi"
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([village])
+  @@index([district])
+}
+
+model Project {
+  id              String            @id @default(cuid())
+  name            String
+  code            String            @unique // e.g. "NH-46-EXP"
+  description     String?
+  department      String // e.g. "National Highways Authority of India (NHAI)"
+  status          String            @default("ACTIVE") // PLANNING, ACTIVE, COMPLETED
+  district        String
+  state           String            @default("Madhya Pradesh")
+  totalAreaHa     Float             @default(0.0)
+  budgetINR       Float             @default(0.0)
+  geometryGeoJson String? // GeoJSON Polygon / MultiPolygon string
+  cases           AcquisitionCase[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([code])
+  @@index([district])
+}
+
+model Parcel {
+  id              String            @id @default(cuid())
+  surveyNumber    String // e.g. "1042"
+  khasraNumber    String? // e.g. "1042/1"
+  village         String // e.g. "Rampur"
+  tehsil          String // e.g. "Huzur"
+  district        String // e.g. "Bhopal"
+  state           String            @default("Madhya Pradesh")
+  recordedAreaHa  Float // e.g. 2.43
+  landType        String            @default("Agricultural") // Agricultural, Residential, Commercial
+  currentStatus   String            @default("Under Verification")
+  coordinatesJson String? // GeoJSON Polygon coordinates
+  centroidLat     Float? // e.g. 23.2599
+  centroidLng     Float? // e.g. 77.4126
+  cases           AcquisitionCase[]
+  documents       Document[]
+  grievances      Grievance[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([surveyNumber])
+  @@index([village])
+  @@index([district])
+}
+
+model AcquisitionCase {
+  id                       String              @id @default(cuid())
+  caseReference            String              @unique // e.g. "ACQ-2026-MP-1042"
+  parcelId                 String
+  parcel                   Parcel              @relation(fields: [parcelId], references: [id])
+  projectId                String
+  project                  Project             @relation(fields: [projectId], references: [id])
+  citizenId                String
+  citizen                  User                @relation("CitizenCases", fields: [citizenId], references: [id])
+  stage                    String              @default("VERIFICATION") // PROPOSAL, NOTIFICATION, VERIFICATION, AWARD, COMPENSATION, RR, POSSESSION, CLOSURE
+  status                   String              @default("ACTIVE") // ACTIVE, PENDING, COMPLETED, DISPUTED
+  notificationSection      String              @default("Section 11(1)")
+  noticeDate               DateTime?
+  estimatedCompensationINR Float               @default(0.0)
+  disbursedCompensationINR Float               @default(0.0)
+  remarks                  String?
+  events                   AcquisitionEvent[]
+  documents                Document[]
+  compensationRecord       CompensationRecord?
+  rrRecord                 RRRecord?
+  grievances               Grievance[]
+  actionItems              ActionItem[]
+  notifications            Notification[]
+  createdAt                DateTime            @default(now())
+  updatedAt                DateTime            @updatedAt
+
+  @@index([caseReference])
+  @@index([parcelId])
+  @@index([projectId])
+  @@index([citizenId])
+  @@index([stage])
+  @@index([status])
+}
+
+model AcquisitionEvent {
+  id          String          @id @default(cuid())
+  caseId      String
+  case        AcquisitionCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  stage       String // PROPOSAL, NOTIFICATION, VERIFICATION, AWARD, COMPENSATION, RR, POSSESSION, CLOSURE
+  title       String
+  description String
+  eventDate   DateTime
+  status      String          @default("COMPLETED") // COMPLETED, CURRENT, UPCOMING
+  documentId  String?
+  document    Document?       @relation(fields: [documentId], references: [id])
+  createdAt   DateTime        @default(now())
+
+  @@index([caseId])
+  @@index([stage])
+}
+
+model Document {
+  id                       String             @id @default(cuid())
+  caseId                   String?
+  case                     AcquisitionCase?   @relation(fields: [caseId], references: [id])
+  parcelId                 String?
+  parcel                   Parcel?            @relation(fields: [parcelId], references: [id])
+  uploaderId               String
+  uploader                 User               @relation("UploadedDocuments", fields: [uploaderId], references: [id])
+  title                    String
+  documentType             String             @default("ACQUISITION_NOTICE") // ACQUISITION_NOTICE, LAND_RECORD, AWARD_DOCUMENT, COMPENSATION_RECORD, RR_DOCUMENT, IDENTITY_PROOF, OTHER
+  fileUrl                  String
+  fileSize                 Int                @default(0)
+  mimeType                 String             @default("application/pdf")
+  verificationStatus       String             @default("PENDING") // PENDING, VERIFIED, DISCREPANCY_FOUND, REJECTED
+  extractedDataJson        String? // JSON string of structured OCR fields
+  rawText                  String? // Full text or simulated OCR stream
+  plainLanguageExplanation String? // AI Citizen Summary
+  hasDiscrepancy           Boolean            @default(false)
+  discrepancySummary       String?
+  isDemo                   Boolean            @default(false)
+  events                   AcquisitionEvent[]
+  actionItems              ActionItem[]
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+
+  @@index([caseId])
+  @@index([parcelId])
+  @@index([uploaderId])
+  @@index([documentType])
+}
+
+model CompensationRecord {
+  id                 String          @id @default(cuid())
+  caseId             String          @unique
+  case               AcquisitionCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  landAssessmentINR  Float           @default(0.0)
+  assetAssessmentINR Float           @default(0.0)
+  solatiumINR        Float           @default(0.0) // 100% Solatium under RFCTLARR
+  interestINR        Float           @default(0.0) // 12% additional market value
+  totalAssessedINR   Float           @default(0.0)
+  assessmentStatus   String          @default("ASSESSED") // PENDING, ASSESSED, APPROVED, DISBURSED
+  paymentStatus      String          @default("PROCESSING") // UNPAID, PROCESSING, PAID
+  assessmentDate     DateTime?
+  paymentDate        DateTime?
+  pfmsReference      String? // Public Financial Management System Ref
+  bankAccountMasked  String? // e.g. "SBI A/C ending in 4910"
+  ifscCode           String?
+  notes              String?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  @@index([caseId])
+}
+
+model RRRecord {
+  id                   String          @id @default(cuid())
+  caseId               String          @unique
+  case                 AcquisitionCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  familyMembersCount   Int             @default(1)
+  displacedStatus      String          @default("NOT_DISPLACED") // NOT_DISPLACED, DISPLACED, RESETTLED
+  assessmentStatus     String          @default("ELIGIBLE") // PENDING, ELIGIBLE, SANCTIONED
+  housingAssistanceINR Float           @default(0.0)
+  livelihoodGrantINR   Float           @default(0.0)
+  resettlementSiteName String?
+  allottedPlotNumber   String?
+  remarks              String?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  @@index([caseId])
+}
+
+model Grievance {
+  id                  String           @id @default(cuid())
+  referenceNumber     String           @unique // e.g. "GR-2026-0842"
+  caseId              String?
+  case                AcquisitionCase? @relation(fields: [caseId], references: [id])
+  parcelId            String?
+  parcel              Parcel?          @relation(fields: [parcelId], references: [id])
+  citizenId           String
+  citizen             User             @relation("CitizenGrievances", fields: [citizenId], references: [id])
+  category            String           @default("WRONG_AREA") // WRONG_SURVEY_NUMBER, WRONG_AREA, WRONG_OWNER, WRONG_MAP_LOCATION, COMPENSATION_ISSUE, DOCUMENT_ISSUE, OTHER
+  title               String
+  description         String
+  detectedDiscrepancy String? // JSON metadata string
+  attachmentUrl       String?
+  status              String           @default("SUBMITTED") // SUBMITTED, UNDER_REVIEW, RESPONSE_ADDED, RESOLVED
+  officerResponse     String?
+  reviewedBy          String? // Officer name / ID
+  resolvedAt          DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  @@index([referenceNumber])
+  @@index([caseId])
+  @@index([citizenId])
+  @@index([status])
+}
+
+model ActionItem {
+  id          String          @id @default(cuid())
+  caseId      String
+  case        AcquisitionCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  citizenId   String
+  citizen     User            @relation("CitizenActionItems", fields: [citizenId], references: [id])
+  title       String
+  description String
+  actionType  String          @default("IDENTITY_VERIFICATION")
+  status      String          @default("ACTION_REQUIRED") // ACTION_REQUIRED, IN_PROGRESS, COMPLETED, NO_ACTION_REQUIRED
+  deadline    DateTime?
+  documentId  String?
+  document    Document?       @relation(fields: [documentId], references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([caseId])
+  @@index([citizenId])
+  @@index([status])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  caseId    String?
+  case      AcquisitionCase? @relation(fields: [caseId], references: [id])
+  title     String
+  message   String
+  type      String           @default("STATUS_UPDATE") // NEW_DOCUMENT, ACTION_REQUIRED, DEADLINE_APPROACHING, STATUS_UPDATE, COMPENSATION_UPDATE, GRIEVANCE_UPDATE
+  isRead    Boolean          @default(false)
+  metadata  String? // JSON metadata
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String // e.g. "DOCUMENT_UPLOADED", "GRIEVANCE_SUBMITTED", "CASE_STAGE_UPDATED"
+  entityType String // e.g. "Case", "Grievance", "Document"
+  entityId   String?
+  details    String? // JSON details
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([entityType])
+}

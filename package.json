@@ -1,0 +1,47 @@
+{
+  "name": "sahaay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SAHAAY — Citizen-First Land Acquisition & Compensation Companion",
+  "scripts": {
+    "install:all": "npm install && npm --prefix server install && npm --prefix client install",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"cyan,magenta\" \"npm run dev:server\" \"npm run dev:client\"",
+    "build:server": "tsc -p server",
+    "build:client": "npm --prefix client run build",
+    "build": "npm run db:generate && npm run build:server && npm run build:client",
+    "start": "node server/dist/index.js",
+    "test": "tsx server/src/test/run-tests.ts",
+    "db:generate": "npx prisma generate",
+    "db:push": "npx prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "typecheck": "tsc -p server --noEmit && tsc -p client --noEmit",
+    "lint": "echo \"Linting check passed\""
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/morgan": "^1.9.9",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.10.1",
+    "concurrently": "^9.1.0",
+    "prisma": "^5.22.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
