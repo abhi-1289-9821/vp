@@ -67,11 +67,11 @@ export async function getOfficerCases(req: Request, res: Response, next: NextFun
 
     if (search) {
       whereClause.OR = [
-        { caseReference: { contains: search } },
-        { parcel: { surveyNumber: { contains: search } } },
-        { parcel: { village: { contains: search } } },
-        { citizen: { name: { contains: search } } },
-        { project: { name: { contains: search } } },
+        { caseReference: { contains: search, mode: 'insensitive' } },
+        { parcel: { surveyNumber: { contains: search, mode: 'insensitive' } } },
+        { parcel: { village: { contains: search, mode: 'insensitive' } } },
+        { citizen: { name: { contains: search, mode: 'insensitive' } } },
+        { project: { name: { contains: search, mode: 'insensitive' } } },
       ];
     }
 

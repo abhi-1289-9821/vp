@@ -2,9 +2,9 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { BadRequestError } from '../utils/errors';
+import { config } from '../config/env';
 
-const storageDir = process.env.STORAGE_PATH || path.join(process.cwd(), '../storage');
-const uploadDir = path.join(storageDir, 'documents');
+const uploadDir = path.resolve(config.STORAGE_PATH, 'documents');
 
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -16,34 +16,43 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
-    cb(null, `${uniqueSuffix}-${sanitizedName}`);
+    const ext = path.extname(file.originalname).toLowerCase();
+    const baseName = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
+    cb(null, `${uniqueSuffix}-${baseName}${ext}`);
   },
 });
 
+const ALLOWED_MIMES = [
+  'application/pdf',
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
+
+const ALLOWED_EXTENSIONS = ['.pdf', '.jpg', '.jpeg', '.png', '.webp', '.doc', '.docx'];
+
 const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  const allowedMimes = [
-    'application/pdf',
-    'image/jpeg',
-    'image/png',
-    'image/webp',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  ];
+  const ext = path.extname(file.originalname).toLowerCase();
 
-  if (allowedMimes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new BadRequestError('Only PDF and image files (JPG, PNG, WebP) are allowed.', 'INVALID_FILE_TYPE') as any);
+  // Reject files with blocked or missing extensions or MIME mismatches
+  if (!ALLOWED_EXTENSIONS.includes(ext) || !ALLOWED_MIMES.includes(file.mimetype)) {
+    return cb(
+      new BadRequestError(
+        'Only PDF, JPG, PNG, WebP, and DOC/DOCX documents are allowed.',
+        'INVALID_FILE_TYPE'
+      ) as any
+    );
   }
-};
 
-const maxFileSizeMB = parseInt(process.env.MAX_FILE_SIZE_MB || '15', 10);
+  cb(null, true);
+};
 
 export const uploadMiddleware = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: maxFileSizeMB * 1024 * 1024,
+    fileSize: config.MAX_FILE_SIZE_MB * 1024 * 1024,
   },
 });

@@ -1,6 +1,7 @@
 import { useAuthStore } from '../store/authStore.js';
 
-const API_BASE = '/api';
+const rawApiUrl = (import.meta as any).env?.VITE_API_URL || '';
+const API_BASE = rawApiUrl ? `${rawApiUrl.replace(/\/$/, '')}/api` : '/api';
 
 export async function fetchWithAuth<T = any>(url: string, options: RequestInit = {}): Promise<T> {
   const token = useAuthStore.getState().token;

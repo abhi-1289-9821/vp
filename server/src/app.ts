@@ -19,10 +19,35 @@ app.use(
   })
 );
 
+// CORS configuration
+const rawCorsOrigin = config.CORS_ORIGIN.trim();
+const allowedOrigins =
+  rawCorsOrigin === '*'
+    ? []
+    : rawCorsOrigin.split(',').map((o) => o.trim().replace(/\/$/, ''));
+
 app.use(
   cors({
-    origin: config.CORS_ORIGIN === '*' ? true : config.CORS_ORIGIN.split(','),
-    credentials: true,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. server-to-server, mobile, curl)
+      if (!origin) return callback(null, true);
+
+      // In non-production, if explicitly set to '*', allow
+      if (rawCorsOrigin === '*') {
+        if (config.NODE_ENV === 'production') {
+          return callback(new Error('CORS wildcard origin (*) is not allowed in production with credentials.'));
+        }
+        return callback(null, true);
+      }
+
+      const normalizedOrigin = origin.replace(/\/$/, '');
+      if (allowedOrigins.includes(normalizedOrigin) || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`Origin ${origin} is not permitted by CORS policy`));
+    },
+    credentials: rawCorsOrigin !== '*',
   })
 );
 
@@ -39,8 +64,17 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Serve uploaded documents statically
-app.use('/storage/documents', express.static(uploadDir));
+// Serve uploaded documents statically with security headers (prevents Stored XSS / MIME confusion)
+app.use(
+  '/storage/documents',
+  (req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Content-Security-Policy', "default-src 'none'");
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    next();
+  },
+  express.static(uploadDir)
+);
 
 // Health check endpoint (Simple Liveness)
 const healthHandler = (req: Request, res: Response) => {
@@ -76,6 +110,24 @@ app.get('/api/health/ready', async (req: Request, res: Response) => {
 
 // API Routes
 app.use('/api', apiRouter);
+
+// Serve Frontend Static Assets in Production
+const possibleClientDistPaths = [
+  path.resolve(__dirname, '../../client/dist'),
+  path.resolve(process.cwd(), 'client/dist'),
+  path.resolve(process.cwd(), '../client/dist'),
+];
+
+const clientDistPath = possibleClientDistPaths.find((p) => fs.existsSync(p));
+if (clientDistPath) {
+  app.use(express.static(clientDistPath));
+  app.get('*', (req: Request, res: Response, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/storage')) {
+      return next();
+    }
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+  });
+}
 
 // Global Error Handler
 app.use(errorHandler);

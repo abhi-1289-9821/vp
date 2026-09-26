@@ -1,18 +1,59 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../db';
-import { NotFoundError } from '../utils/errors';
+import {
+  NotFoundError,
+  ForbiddenError,
+  UnauthorizedError,
+  BadRequestError,
+} from '../utils/errors';
+
+/**
+ * Validates that the requesting user is either an OFFICER/ADMIN or the citizen who owns the case.
+ */
+async function findAndAuthorizeCase(
+  id: string,
+  user: { userId: string; role: string } | undefined
+) {
+  if (!user) {
+    throw new UnauthorizedError('Authentication required');
+  }
+
+  const acquisitionCase = await prisma.acquisitionCase.findFirst({
+    where: {
+      OR: [{ id }, { caseReference: id }],
+    },
+    select: {
+      id: true,
+      citizenId: true,
+      caseReference: true,
+    },
+  });
+
+  if (!acquisitionCase) {
+    throw new NotFoundError(`Acquisition case '${id}' not found`, 'CASE_NOT_FOUND');
+  }
+
+  if (
+    user.role !== 'OFFICER' &&
+    user.role !== 'ADMIN' &&
+    acquisitionCase.citizenId !== user.userId
+  ) {
+    throw new ForbiddenError(
+      'Access denied: You do not have permission to view this case',
+      'FORBIDDEN_CASE_ACCESS'
+    );
+  }
+
+  return acquisitionCase;
+}
 
 export async function getCaseById(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id as string;
+    const authCase = await findAndAuthorizeCase(id, req.user);
 
-    const acquisitionCase = await prisma.acquisitionCase.findFirst({
-      where: {
-        OR: [
-          { id },
-          { caseReference: id },
-        ],
-      },
+    const acquisitionCase = await prisma.acquisitionCase.findUnique({
+      where: { id: authCase.id },
       include: {
         parcel: true,
         project: true,
@@ -37,10 +78,6 @@ export async function getCaseById(req: Request, res: Response, next: NextFunctio
       },
     });
 
-    if (!acquisitionCase) {
-      throw new NotFoundError(`Acquisition case '${id}' not found`, 'CASE_NOT_FOUND');
-    }
-
     return res.json({
       success: true,
       data: acquisitionCase,
@@ -53,9 +90,10 @@ export async function getCaseById(req: Request, res: Response, next: NextFunctio
 export async function getCaseTimeline(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id as string;
+    const authCase = await findAndAuthorizeCase(id, req.user);
 
-    const acquisitionCase = await prisma.acquisitionCase.findFirst({
-      where: { OR: [{ id }, { caseReference: id }] },
+    const acquisitionCase = await prisma.acquisitionCase.findUnique({
+      where: { id: authCase.id },
       include: {
         events: {
           orderBy: { eventDate: 'asc' },
@@ -79,7 +117,7 @@ export async function getCaseTimeline(req: Request, res: Response, next: NextFun
       { key: 'CLOSURE', label: 'Case Finalization & Closure', desc: 'DBT disbursement and revenue mutation update' },
     ];
 
-    const currentStageIndex = stages.findIndex(s => s.key === acquisitionCase.stage);
+    const currentStageIndex = stages.findIndex((s) => s.key === acquisitionCase.stage);
 
     const timeline = stages.map((stage, idx) => {
       let status: 'COMPLETED' | 'CURRENT' | 'UPCOMING' = 'UPCOMING';
@@ -114,10 +152,11 @@ export async function getCaseTimeline(req: Request, res: Response, next: NextFun
 export async function getCaseCompensation(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id as string;
+    const authCase = await findAndAuthorizeCase(id, req.user);
 
     const compensation = await prisma.compensationRecord.findFirst({
       where: {
-        case: { OR: [{ id }, { caseReference: id }] },
+        caseId: authCase.id,
       },
       include: {
         case: { include: { parcel: true, project: true } },
@@ -140,10 +179,11 @@ export async function getCaseCompensation(req: Request, res: Response, next: Nex
 export async function getCaseRR(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id as string;
+    const authCase = await findAndAuthorizeCase(id, req.user);
 
     const rr = await prisma.rRRecord.findFirst({
       where: {
-        case: { OR: [{ id }, { caseReference: id }] },
+        caseId: authCase.id,
       },
       include: {
         case: { include: { parcel: true } },
@@ -166,10 +206,11 @@ export async function getCaseRR(req: Request, res: Response, next: NextFunction)
 export async function getCaseDocuments(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id as string;
+    const authCase = await findAndAuthorizeCase(id, req.user);
 
     const documents = await prisma.document.findMany({
       where: {
-        case: { OR: [{ id }, { caseReference: id }] },
+        caseId: authCase.id,
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -186,10 +227,11 @@ export async function getCaseDocuments(req: Request, res: Response, next: NextFu
 export async function getCaseActions(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id as string;
+    const authCase = await findAndAuthorizeCase(id, req.user);
 
     const actions = await prisma.actionItem.findMany({
       where: {
-        case: { OR: [{ id }, { caseReference: id }] },
+        caseId: authCase.id,
       },
       include: { document: true },
       orderBy: { deadline: 'asc' },
@@ -207,7 +249,39 @@ export async function getCaseActions(req: Request, res: Response, next: NextFunc
 export async function updateActionStatus(req: Request, res: Response, next: NextFunction) {
   try {
     const actionId = req.params.actionId as string;
-    const { status } = req.body;
+    const user = req.user;
+    if (!user) {
+      throw new UnauthorizedError('Authentication required');
+    }
+
+    const { status } = req.body || {};
+
+    const action = await prisma.actionItem.findUnique({
+      where: { id: actionId },
+      include: { case: true },
+    });
+
+    if (!action) {
+      throw new NotFoundError('Action item not found', 'ACTION_NOT_FOUND');
+    }
+
+    const isStaff = user.role === 'OFFICER' || user.role === 'ADMIN';
+    const isCaseOwner = action.citizenId === user.userId || action.case.citizenId === user.userId;
+
+    if (!isStaff && !isCaseOwner) {
+      throw new ForbiddenError(
+        'Access denied: You do not have permission to update this action item',
+        'FORBIDDEN_ACTION_UPDATE'
+      );
+    }
+
+    const allowedStatuses = ['ACTION_REQUIRED', 'IN_PROGRESS', 'COMPLETED', 'NO_ACTION_REQUIRED'];
+    if (!status || !allowedStatuses.includes(status)) {
+      throw new BadRequestError(
+        `Invalid status '${status}'. Allowed values: ${allowedStatuses.join(', ')}`,
+        'INVALID_STATUS'
+      );
+    }
 
     const updated = await prisma.actionItem.update({
       where: { id: actionId },

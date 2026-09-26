@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../db';
-import { BadRequestError, NotFoundError, UnauthorizedError } from '../utils/errors';
+import { BadRequestError, NotFoundError, UnauthorizedError, ForbiddenError } from '../utils/errors';
 import { logger } from '../utils/logger';
 
 export async function createGrievance(req: Request, res: Response, next: NextFunction) {
@@ -119,6 +119,11 @@ export async function getGrievances(req: Request, res: Response, next: NextFunct
 export async function getGrievanceById(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id as string;
+    const user = req.user;
+
+    if (!user) {
+      throw new UnauthorizedError('Authentication required');
+    }
 
     const grievance = await prisma.grievance.findFirst({
       where: {
@@ -133,6 +138,14 @@ export async function getGrievanceById(req: Request, res: Response, next: NextFu
 
     if (!grievance) {
       throw new NotFoundError('Grievance not found');
+    }
+
+    // IDOR protection: only allow the citizen who filed it, or officer/admin
+    if (user.role !== 'OFFICER' && user.role !== 'ADMIN' && grievance.citizenId !== user.userId) {
+      throw new ForbiddenError(
+        'Access denied: You do not have permission to view this grievance',
+        'FORBIDDEN_GRIEVANCE_ACCESS'
+      );
     }
 
     return res.json({

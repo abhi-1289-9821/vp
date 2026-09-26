@@ -12,27 +12,27 @@ export async function searchParcels(req: Request, res: Response, next: NextFunct
     const whereClause: any = {};
 
     if (survey) {
-      whereClause.surveyNumber = { contains: survey };
+      whereClause.surveyNumber = { contains: survey, mode: 'insensitive' };
     }
     if (village) {
-      whereClause.village = { contains: village };
+      whereClause.village = { contains: village, mode: 'insensitive' };
     }
     if (district) {
-      whereClause.district = { contains: district };
+      whereClause.district = { contains: district, mode: 'insensitive' };
     }
 
     if (q) {
       whereClause.OR = [
-        { surveyNumber: { contains: q } },
-        { khasraNumber: { contains: q } },
-        { village: { contains: q } },
-        { district: { contains: q } },
+        { surveyNumber: { contains: q, mode: 'insensitive' } },
+        { khasraNumber: { contains: q, mode: 'insensitive' } },
+        { village: { contains: q, mode: 'insensitive' } },
+        { district: { contains: q, mode: 'insensitive' } },
         {
           cases: {
             some: {
               OR: [
-                { caseReference: { contains: q } },
-                { project: { name: { contains: q } } },
+                { caseReference: { contains: q, mode: 'insensitive' } },
+                { project: { name: { contains: q, mode: 'insensitive' } } },
               ],
             },
           },

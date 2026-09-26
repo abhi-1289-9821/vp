@@ -8,16 +8,19 @@ import {
   getCaseActions,
   updateActionStatus,
 } from '../controllers/case.controller';
-import { authenticate, optionalAuthenticate } from '../middleware/auth';
+import { authenticate } from '../middleware/auth';
 
 const router = Router();
 
-router.get('/:id', optionalAuthenticate, getCaseById);
-router.get('/:id/timeline', optionalAuthenticate, getCaseTimeline);
-router.get('/:id/compensation', optionalAuthenticate, getCaseCompensation);
-router.get('/:id/rr', optionalAuthenticate, getCaseRR);
-router.get('/:id/documents', optionalAuthenticate, getCaseDocuments);
-router.get('/:id/actions', optionalAuthenticate, getCaseActions);
-router.patch('/actions/:actionId', authenticate, updateActionStatus);
+// All case data routes require authentication
+router.use(authenticate);
+
+router.get('/:id', getCaseById);
+router.get('/:id/timeline', getCaseTimeline);
+router.get('/:id/compensation', getCaseCompensation);
+router.get('/:id/rr', getCaseRR);
+router.get('/:id/documents', getCaseDocuments);
+router.get('/:id/actions', getCaseActions);
+router.patch('/actions/:actionId', updateActionStatus);
 
 export default router;

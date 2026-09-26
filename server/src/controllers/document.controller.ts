@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { prisma } from '../db';
 import { getAIService } from '../ai';
 import { getStorageService } from '../storage';
-import { BadRequestError, NotFoundError, UnauthorizedError } from '../utils/errors';
+import { BadRequestError, NotFoundError, UnauthorizedError, ForbiddenError } from '../utils/errors';
 import { logger } from '../utils/logger';
 
 export async function uploadAndAnalyzeDocument(req: Request, res: Response, next: NextFunction) {
@@ -31,7 +31,7 @@ export async function uploadAndAnalyzeDocument(req: Request, res: Response, next
       matchedParcel = await prisma.parcel.findFirst({
         where: {
           surveyNumber: extractedData.surveyNumber,
-          ...(extractedData.village ? { village: { contains: extractedData.village } } : {}),
+          ...(extractedData.village ? { village: { contains: extractedData.village, mode: 'insensitive' as const } } : {}),
         },
         include: {
           cases: {
@@ -132,6 +132,11 @@ export async function uploadAndAnalyzeDocument(req: Request, res: Response, next
 export async function getDocumentById(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id as string;
+    const user = req.user;
+
+    if (!user) {
+      throw new UnauthorizedError('Authentication required');
+    }
 
     const doc = await prisma.document.findUnique({
       where: { id },
@@ -144,6 +149,18 @@ export async function getDocumentById(req: Request, res: Response, next: NextFun
 
     if (!doc) {
       throw new NotFoundError('Document not found');
+    }
+
+    // IDOR protection: only allow the uploader, the affected citizen, or an officer/admin
+    const isOwner = doc.uploaderId === user.userId;
+    const isCaseCitizen = doc.case?.citizenId === user.userId;
+    const isStaff = user.role === 'OFFICER' || user.role === 'ADMIN';
+
+    if (!isOwner && !isCaseCitizen && !isStaff) {
+      throw new ForbiddenError(
+        'Access denied: You do not have permission to view this document',
+        'FORBIDDEN_DOCUMENT_ACCESS'
+      );
     }
 
     return res.json({
