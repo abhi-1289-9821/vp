@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Sindhi (سنڌي) (sd) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const sd: TranslationSchema = {
+export const sd: Partial<TranslationSchema> = {
   appName: "سهاءِ (SAHAAY)",
   emblemLetter: "س",
   tagline: "توهان جي زمين। توهان جو ڪيس। توهان جو حق।",

@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Kashmiri (कश्मीरी) (ks) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const ks: TranslationSchema = {
+export const ks: Partial<TranslationSchema> = {
   appName: "सहाय (SAHAAY)",
   emblemLetter: "स",
   tagline: "तुहंद ज़मीन। तुहंद मुकद्दमह। तुहंद हक़।",

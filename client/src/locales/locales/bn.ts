@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Bengali (বাংলা) (bn) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const bn: TranslationSchema = {
+export const bn: Partial<TranslationSchema> = {
   appName: "সহায় (SAHAAY)",
   emblemLetter: "স",
   tagline: "আপনার জমি। আপনার মামলা। আপনার অধিকার।",

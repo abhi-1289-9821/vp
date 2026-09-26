@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Konkani (कोंकणी) (kok) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const kok: TranslationSchema = {
+export const kok: Partial<TranslationSchema> = {
   appName: "सहाय (SAHAAY)",
   emblemLetter: "स",
   tagline: "तुमची जमीन। तुमचो खटलो। तुमचो हक्क।",

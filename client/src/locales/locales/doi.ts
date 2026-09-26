@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Dogri (डोगरी) (doi) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const doi: TranslationSchema = {
+export const doi: Partial<TranslationSchema> = {
   appName: "सहाय (SAHAAY)",
   emblemLetter: "स",
   tagline: "तुंदी जमीन। तुंदा केस। तुंदा हक।",

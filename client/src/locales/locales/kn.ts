@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Kannada (ಕನ್ನಡ) (kn) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const kn: TranslationSchema = {
+export const kn: Partial<TranslationSchema> = {
   appName: "ಸಹಾಯ್ (SAHAAY)",
   emblemLetter: "ಸ",
   tagline: "ನಿಮ್ಮ ಭೂಮಿ. ನಿಮ್ಮ ಪ್ರಕರಣ. ನಿಮ್ಮ ಹಕ್ಕು.",

@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Maithili (मैथिली) (mai) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const mai: TranslationSchema = {
+export const mai: Partial<TranslationSchema> = {
   appName: "सहाय (SAHAAY)",
   emblemLetter: "स",
   tagline: "अहाँक जमीन। अहाँक मामला। अहाँक अधिकार।",

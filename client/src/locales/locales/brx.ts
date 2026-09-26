@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Bodo (बड़ो) (brx) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const brx: TranslationSchema = {
+export const brx: Partial<TranslationSchema> = {
   appName: "सहाय (SAHAAY)",
   emblemLetter: "स",
   tagline: "नोंथांनि हा। नोंथांनि खथियान। नोंथांनि हक।",

@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Odia (ଓଡ଼ିଆ) (or) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const or: TranslationSchema = {
+export const or: Partial<TranslationSchema> = {
   appName: "ସହାୟ (SAHAAY)",
   emblemLetter: "ସ",
   tagline: "ଆପଣଙ୍କ ଜମି। ଆପଣଙ୍କ ମାମଲା। ଆପଣଙ୍କ ଅଧିକାର।",

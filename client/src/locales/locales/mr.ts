@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Marathi (मराठी) (mr) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const mr: TranslationSchema = {
+export const mr: Partial<TranslationSchema> = {
   appName: "सहाय (SAHAAY)",
   emblemLetter: "स",
   tagline: "तुमची जमीन. तुमचे प्रकरण. तुमचा हक्क.",

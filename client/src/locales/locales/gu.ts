@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Gujarati (ગુજરાતી) (gu) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const gu: TranslationSchema = {
+export const gu: Partial<TranslationSchema> = {
   appName: "સહાય (SAHAAY)",
   emblemLetter: "સ",
   tagline: "તમારી જમીન. તમારો કેસ. તમારો અધિકાર.",

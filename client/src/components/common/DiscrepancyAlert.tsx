@@ -30,14 +30,10 @@ export const DiscrepancyAlert: React.FC<DiscrepancyAlertProps> = ({
           <CheckCircle2 className="w-5 h-5 text-[#2E7D5B] shrink-0 mt-0.5" />
           <div>
             <h4 className="font-bold text-[#2E7D5B] text-sm">
-              {language === 'en'
-                ? 'Land Record Cross-Verification: Consistent'
-                : 'भूमि रिकॉर्ड सत्यापन: सुसंगत एवं सत्यापित'}
+              {t('verificationConsistentTitle', language)}
             </h4>
             <p className="text-[#243746] mt-0.5">
-              {language === 'en'
-                ? 'Extracted notice attributes match the state cadastral database. No measurement variance detected.'
-                : 'दस्तावेज़ में दर्ज विवरण राजस्व डेटाबेस से पूरी तरह मेल खाता है। कोई विसंगति नहीं पाई गई।'}
+              {t('verificationConsistentDesc', language)}
             </p>
           </div>
         </div>
@@ -76,9 +72,7 @@ export const DiscrepancyAlert: React.FC<DiscrepancyAlertProps> = ({
               {t('potentialDiscrepancy', language)}
             </h4>
             <span className="text-xs text-[#667784]">
-              {language === 'en'
-                ? 'Statutory verification check between uploaded notice and Land Revenue Register'
-                : 'अपलोड किए गए नोटिस और राजस्व रिकॉर्ड के बीच वैधानिक सत्यापन जांच'}
+              {t('verificationSub', language)}
             </span>
           </div>
         </div>
@@ -93,8 +87,8 @@ export const DiscrepancyAlert: React.FC<DiscrepancyAlertProps> = ({
         {discrepancy.discrepancies.map((item, idx) => (
           <div key={idx} className="bg-white border border-[#DDE6EC] rounded-lg p-4 space-y-2.5 shadow-soft">
             <div className="flex justify-between items-center text-[11px] font-bold text-[#667784] uppercase">
-              <span>{item.field} {language === 'en' ? 'Verification' : 'सत्यापन'}</span>
-              <span className="text-[#C62828] font-bold">{item.severity} {language === 'en' ? 'Variance' : 'अंतर'}</span>
+              <span>{item.field} {t('verificationLabel', language)}</span>
+              <span className="text-[#C62828] font-bold">{item.severity} {t('varianceLabel', language)}</span>
             </div>
 
             <div className="grid grid-cols-2 gap-2 text-xs">

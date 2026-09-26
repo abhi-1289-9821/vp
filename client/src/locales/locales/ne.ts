@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Nepali (नेपाली) (ne) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const ne: TranslationSchema = {
+export const ne: Partial<TranslationSchema> = {
   appName: "सहाय (SAHAAY)",
   emblemLetter: "स",
   tagline: "तपाईंको जग्गा। तपाईंको मुद्दा। तपाईंको अधिकार।",

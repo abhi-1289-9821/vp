@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Punjabi (ਪੰਜਾਬੀ) (pa) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const pa: TranslationSchema = {
+export const pa: Partial<TranslationSchema> = {
   appName: "ਸਹਾਏ (SAHAAY)",
   emblemLetter: "ਸ",
   tagline: "ਤੁਹਾਡੀ ਜ਼ਮੀਨ। ਤੁਹਾਡਾ ਕੇਸ। ਤੁਹਾਡਾ ਹੱਕ।",

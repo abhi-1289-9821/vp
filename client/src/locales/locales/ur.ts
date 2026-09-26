@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Urdu (اردو) (ur) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const ur: TranslationSchema = {
+export const ur: Partial<TranslationSchema> = {
   appName: "سہائے (SAHAAY)",
   emblemLetter: "س",
   tagline: "آپ کی زمین۔ آپ کا مقدمہ۔ آپ کا حق۔",

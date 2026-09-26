@@ -6,6 +6,7 @@ import { Layout } from './components/layout/Layout.js';
 
 // Pages
 import { LoginPage } from './pages/LoginPage.js';
+import { PublicLandingPage } from './pages/PublicLandingPage.js';
 import { CitizenHomePage } from './pages/CitizenHomePage.js';
 import { FindMyLandPage } from './pages/FindMyLandPage.js';
 import { MyLandGISPage } from './pages/MyLandGISPage.js';
@@ -19,7 +20,7 @@ import { NotificationCenterPage } from './pages/NotificationCenterPage.js';
 import { OfficerDashboardPage } from './pages/OfficerDashboardPage.js';
 import { OfficerCasesPage } from './pages/OfficerCasesPage.js';
 
-// Protected Route Guard
+// Protected Route Guard for personalized data
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const token = useAuthStore((state) => state.token);
   if (!token) {
@@ -39,7 +40,7 @@ const OfficerRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 };
 
 export const App: React.FC = () => {
-  const language = useAuthStore((state) => state.language);
+  const { language, token, user } = useAuthStore();
 
   // Sync RTL and lang attribute with html root
   useEffect(() => {
@@ -54,20 +55,27 @@ export const App: React.FC = () => {
       <Route path="/login" element={<LoginPage />} />
 
       {/* Main Application Layout Shell */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Layout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<CitizenHomePage />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={token && user ? <CitizenHomePage /> : <PublicLandingPage />} />
         <Route path="find-land" element={<FindMyLandPage />} />
         <Route path="map" element={<MyLandGISPage />} />
         <Route path="documents/analyze" element={<DocumentIntelligencePage />} />
-        <Route path="documents" element={<DocumentLockerPage />} />
-        <Route path="cases/:id" element={<CaseDetailPage />} />
+        <Route
+          path="documents"
+          element={
+            <ProtectedRoute>
+              <DocumentLockerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="cases/:id"
+          element={
+            <ProtectedRoute>
+              <CaseDetailPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="compensation" element={<CompensationRRPage />} />
         <Route path="actions" element={<ActionCenterPage />} />
         <Route path="grievance" element={<GrievancePage />} />

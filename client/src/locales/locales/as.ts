@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Assamese (অসমীয়া) (as) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const as: TranslationSchema = {
+export const as: Partial<TranslationSchema> = {
   appName: "সহায় (SAHAAY)",
   emblemLetter: "স",
   tagline: "আপোনাৰ ভূমি। আপোনাৰ গোচৰ। আপোনাৰ তথ্য।",

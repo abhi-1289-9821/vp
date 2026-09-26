@@ -127,8 +127,8 @@ export const CompensationRRPage: React.FC = () => {
                         <td className="p-3 font-bold text-right text-[#243746] font-mono">₹{(comp.landAssessmentINR).toLocaleString('en-IN')}</td>
                       </tr>
                       <tr className="hover:bg-slate-50">
-                        <td className="p-3 font-semibold text-[#243746]">2. Standing Trees & Assets</td>
-                        <td className="p-3 text-[#667784]">Horticulture and structural boundary assessment</td>
+                        <td className="p-3 font-semibold text-[#243746]">2. {t('standingTreesAssets', language)}</td>
+                        <td className="p-3 text-[#667784]">{t('horticultureAssessment', language)}</td>
                         <td className="p-3 font-bold text-right text-[#243746] font-mono">₹{(comp.assetAssessmentINR).toLocaleString('en-IN')}</td>
                       </tr>
                       <tr className="bg-[#EAF3F8] hover:bg-[#DDE6EC]">
@@ -138,12 +138,12 @@ export const CompensationRRPage: React.FC = () => {
                       </tr>
                       <tr className="hover:bg-slate-50">
                         <td className="p-3 font-semibold text-[#243746]">4. {t('additionalInterestLabel', language)}</td>
-                        <td className="p-3 text-[#667784]">Interest under Section 30(3) of RFCTLARR Act</td>
+                        <td className="p-3 text-[#667784]">{t('sec303Interest', language)}</td>
                         <td className="p-3 font-bold text-right text-[#243746] font-mono">₹{(comp.interestINR).toLocaleString('en-IN')}</td>
                       </tr>
                       <tr className="bg-[#E8F4EC] font-black text-[#2E7D5B]">
                         <td className="p-3.5">{t('totalCompensation', language)}</td>
-                        <td className="p-3.5">Section 30 Final Statutory Award</td>
+                        <td className="p-3.5">{t('sec30FinalAward', language)}</td>
                         <td className="p-3.5 text-right text-sm font-mono">₹{(comp.totalAssessedINR).toLocaleString('en-IN')}</td>
                       </tr>
                     </tbody>
@@ -170,7 +170,7 @@ export const CompensationRRPage: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#DDE6EC] space-y-1">
                       <span className="text-[#667784] text-xs block font-semibold">{t('landowner', language)}:</span>
-                      <strong className="text-base text-[#123B5D]">{rr.familyMembersCount} Members on Record</strong>
+                      <strong className="text-base text-[#123B5D]">{rr.familyMembersCount} {t('membersOnRecord', language)}</strong>
                     </div>
                     <div className="p-4 rounded-xl bg-[#E8F4EC] border border-[#2E7D5B]/30 space-y-1">
                       <span className="text-[#2E7D5B] text-xs block font-bold">{t('rrLivelihoodTitle', language)}:</span>
@@ -213,7 +213,7 @@ export const CompensationRRPage: React.FC = () => {
                 <div className="pt-2 border-t border-[#DDE6EC]">
                   <span className="inline-flex items-center gap-1 font-bold text-[#2E7D5B] bg-[#E8F4EC] px-2.5 py-1 text-[11px] rounded-md">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    Aadhaar NPCI Mapping Active
+                    {t('aadhaarNpciActive', language)}
                   </span>
                 </div>
               </div>

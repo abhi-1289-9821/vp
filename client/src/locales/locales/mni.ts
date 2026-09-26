@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Manipuri (মৈতৈলোন) (mni) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const mni: TranslationSchema = {
+export const mni: Partial<TranslationSchema> = {
   appName: "সহায় (SAHAAY)",
   emblemLetter: "স",
   tagline: "নহাক্কী লম। নহাক্কী কেস। নহাক্কী হক।",

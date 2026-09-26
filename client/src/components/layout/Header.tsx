@@ -49,8 +49,12 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo & Tagline */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white flex items-center justify-center shadow-md shadow-blue-900/20 group-hover:scale-105 transition">
-              <span className="font-extrabold text-xl tracking-tight">स</span>
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border border-[#D97706]/50 shadow-sm shrink-0 bg-[#FDFBF7] flex items-center justify-center group-hover:scale-105 transition">
+              <img
+                src="/images/sahaay_logo.png"
+                alt="SAHAAY Official Emblem"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <div className="flex items-center space-x-2">
@@ -58,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                   SAHAAY
                 </span>
                 <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 hidden sm:inline-block">
-                  {user?.role === 'OFFICER' ? 'Officer Portal' : 'Citizen Companion'}
+                  {user?.role === 'OFFICER' ? t('officerPortal', language) : t('citizenPortal', language)}
                 </span>
               </div>
               <p className="text-[11px] font-medium text-slate-500 tracking-tight hidden sm:block">
@@ -81,7 +85,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
-              className="flex items-center space-x-1 px-2.5 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800 transition"
+              className="flex items-center space-x-1 px-2.5 py-1.5 text-xs font-bold rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800 transition cursor-pointer"
               title="Toggle Language / भाषा बदलें"
             >
               <Globe className="w-3.5 h-3.5 text-slate-600" />
@@ -92,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
             <Link
               to="/notifications"
               className="relative p-2 rounded-xl text-slate-600 hover:text-blue-900 hover:bg-blue-50 transition"
-              title="Notifications"
+              title={t('notifications', language)}
             >
               <Bell className="w-5 h-5" />
               {unreadCount > 0 && (
@@ -107,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
               <div className="relative">
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center space-x-2 p-1.5 pl-2 rounded-xl border border-slate-200 hover:border-blue-300 bg-slate-50 hover:bg-blue-50/50 transition text-left"
+                  className="flex items-center space-x-2 p-1.5 pl-2 rounded-xl border border-slate-200 hover:border-blue-300 bg-slate-50 hover:bg-blue-50/50 transition text-left cursor-pointer"
                 >
                   <div className="w-7 h-7 rounded-lg bg-blue-800 text-white flex items-center justify-center text-xs font-bold">
                     {user.name.charAt(0)}
@@ -117,7 +121,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                       {user.name}
                     </p>
                     <p className="text-[10px] text-slate-500 font-medium">
-                      {user.role}
+                      {user.role === 'OFFICER' ? t('landOfficer', language) : t('landowner', language)}
                     </p>
                   </div>
                   <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
@@ -129,35 +133,35 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                       <p className="text-xs font-bold text-slate-900">{user.name}</p>
                       <p className="text-[11px] text-slate-500 truncate">{user.email}</p>
                       <span className="inline-block mt-1 text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
-                        {user.role}
+                        {user.role === 'OFFICER' ? t('landOfficer', language) : t('landowner', language)}
                       </span>
                     </div>
 
                     {/* Fast Demo Role Switcher */}
                     <div className="px-3 py-2 border-b border-slate-100 bg-slate-50/70">
                       <span className="text-[10px] font-bold uppercase text-slate-400 block mb-1.5">
-                        Quick Demo Switcher
+                        {t('switchRole', language)}
                       </span>
                       <div className="grid grid-cols-2 gap-1.5">
                         <button
                           onClick={() => switchDemoRole('CITIZEN')}
-                          className={`text-xs py-1.5 px-2 rounded-lg font-medium transition text-center ${
+                          className={`text-xs py-1.5 px-2 rounded-lg font-medium transition text-center cursor-pointer ${
                             user.role === 'CITIZEN'
                               ? 'bg-blue-900 text-white font-semibold'
                               : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
                           }`}
                         >
-                          Citizen
+                          {t('landowner', language)}
                         </button>
                         <button
                           onClick={() => switchDemoRole('OFFICER')}
-                          className={`text-xs py-1.5 px-2 rounded-lg font-medium transition text-center ${
+                          className={`text-xs py-1.5 px-2 rounded-lg font-medium transition text-center cursor-pointer ${
                             user.role === 'OFFICER'
                               ? 'bg-blue-900 text-white font-semibold'
                               : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
                           }`}
                         >
-                          Officer
+                          {t('landOfficer', language)}
                         </button>
                       </div>
                     </div>
@@ -170,7 +174,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                           className="flex items-center space-x-2 px-4 py-2 text-xs text-slate-700 hover:bg-slate-100 font-medium"
                         >
                           <Briefcase className="w-4 h-4 text-blue-700" />
-                          <span>Officer Workspace</span>
+                          <span>{t('officerPortal', language)}</span>
                         </Link>
                       ) : (
                         <Link
@@ -179,7 +183,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                           className="flex items-center space-x-2 px-4 py-2 text-xs text-slate-700 hover:bg-slate-100 font-medium"
                         >
                           <User className="w-4 h-4 text-blue-700" />
-                          <span>Citizen Home</span>
+                          <span>{t('navHome', language)}</span>
                         </Link>
                       )}
 
@@ -189,7 +193,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                         className="flex items-center space-x-2 px-4 py-2 text-xs text-slate-700 hover:bg-slate-100 font-medium"
                       >
                         <FileSearch className="w-4 h-4 text-amber-600" />
-                        <span>Find My Land</span>
+                        <span>{t('findMyLand', language)}</span>
                       </Link>
 
                       <button
@@ -198,10 +202,10 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                           setShowUserMenu(false);
                           navigate('/login');
                         }}
-                        className="w-full flex items-center space-x-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 font-medium text-left"
+                        className="w-full flex items-center space-x-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 font-medium text-left cursor-pointer"
                       >
                         <LogOut className="w-4 h-4 text-red-600" />
-                        <span>Sign Out</span>
+                        <span>{t('signOut', language)}</span>
                       </button>
                     </div>
                   </div>
@@ -212,7 +216,7 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                 to="/login"
                 className="text-xs font-bold px-4 py-2 rounded-xl bg-blue-900 text-white hover:bg-blue-800 transition shadow-sm"
               >
-                Sign In
+                {t('signIn', language)}
               </Link>
             )}
           </div>

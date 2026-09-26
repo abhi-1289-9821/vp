@@ -14,8 +14,12 @@ export const Footer: React.FC = () => {
         {/* Col 1: Institutional Identity */}
         <div className="space-y-3">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#1B4D78] border border-[#E8B84A] text-white flex items-center justify-center font-bold text-base">
-              {t('emblemLetter', language)}
+            <div className="w-10 h-10 rounded-full overflow-hidden border border-[#E8B84A] bg-[#FDFBF7] flex items-center justify-center shrink-0">
+              <img
+                src="/images/sahaay_logo.png"
+                alt="SAHAAY Emblem"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <span className="text-lg font-black text-white tracking-tight">

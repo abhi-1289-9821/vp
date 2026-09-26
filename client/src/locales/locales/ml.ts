@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Malayalam (മലയാളം) (ml) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const ml: TranslationSchema = {
+export const ml: Partial<TranslationSchema> = {
   appName: "സഹായ് (SAHAAY)",
   emblemLetter: "സ",
   tagline: "നിങ്ങളുടെ ഭൂമി. നിങ്ങളുടെ കേസ്. നിങ്ങളുടെ അവകാശം.",

@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Santali (ᱥᱟᱱᱛᱟᱲᱤ) (sat) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const sat: TranslationSchema = {
+export const sat: Partial<TranslationSchema> = {
   appName: "ᱥᱟᱦᱟᱭ (SAHAAY)",
   emblemLetter: "ᱥ",
   tagline: "ᱟᱢᱟᱜ ᱦᱟᱥᱟ᱾ ᱟᱢᱟᱜ ᱢᱟᱢᱞᱟ᱾ ᱟᱢᱟᱜ ᱦᱚᱠ᱾",

@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore.js';
 import { api } from '../services/api.js';
 import { ArrowRight, UserCheck } from 'lucide-react';
 import { t } from '../lib/i18n.js';
 
 export const LoginPage: React.FC = () => {
-  const [isRegister, setIsRegister] = useState(false);
+  const [searchParams] = useSearchParams();
+  const initialRegister = searchParams.get('tab') === 'register' || searchParams.get('mode') === 'register';
+  const [isRegister, setIsRegister] = useState(initialRegister);
+
+  useEffect(() => {
+    if (searchParams.get('tab') === 'register' || searchParams.get('mode') === 'register') {
+      setIsRegister(true);
+    } else if (searchParams.get('tab') === 'login' || searchParams.get('mode') === 'login') {
+      setIsRegister(false);
+    }
+  }, [searchParams]);
   const [email, setEmail] = useState('citizen@sahaay.demo');
   const [password, setPassword] = useState('password123');
   const [name, setName] = useState('');
@@ -76,8 +86,12 @@ export const LoginPage: React.FC = () => {
 
           {/* Top Brand Seal */}
           <div className="relative z-10 space-y-2">
-            <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-[#E8B84A] flex items-center justify-center font-extrabold text-2xl shadow-soft">
-              {t('emblemLetter', language)}
+            <div className="w-20 h-20 rounded-full overflow-hidden bg-[#FDFBF7] p-1 border-2 border-[#E8B84A] shadow-soft flex items-center justify-center">
+              <img
+                src="/images/sahaay_logo.png"
+                alt="SAHAAY Emblem"
+                className="w-full h-full object-cover"
+              />
             </div>
             <h2 className="text-2xl font-black tracking-tight text-white">
               {t('appName', language)}

@@ -44,17 +44,15 @@ export const UtilityBar: React.FC = () => {
         {/* Left: Administrative Label */}
         <div className="flex items-center space-x-2 text-[11px] sm:text-xs">
           <span className="font-bold text-[#E8B84A]">
-            {language === 'en' ? 'SAHAAY' : `${currentLangInfo.nativeName} • SAHAAY`}
+            {t('appName', language)}
           </span>
           <span className="text-slate-400">|</span>
           <span className="text-slate-200 font-medium">
-            {language === 'en' ? 'Citizen Assistance Portal' : t('citizenPortal', language)}
+            {t('citizenPortal', language)}
           </span>
           <span className="hidden md:inline text-slate-400">•</span>
           <span className="hidden md:inline text-slate-300">
-            {language === 'en'
-              ? 'Land Acquisition & Compensation Companion'
-              : t('heroSub', language)}
+            {t('heroSub', language)}
           </span>
         </div>
 
@@ -118,10 +116,10 @@ export const UtilityBar: React.FC = () => {
                 <div className="p-2.5 bg-[#123B5D] text-white flex items-center justify-between border-b border-[#1B4D78]">
                   <div className="flex items-center space-x-2">
                     <Globe className="w-4 h-4 text-[#E8B84A]" />
-                    <span className="font-bold text-xs">Select Language / भाषा चुनें</span>
+                    <span className="font-bold text-xs">23 Languages / भाषाएं</span>
                   </div>
                   <span className="text-[10px] bg-[#E8B84A] text-[#123B5D] px-1.5 py-0.5 rounded-full font-bold">
-                    23 Languages
+                    {currentLangInfo.name}
                   </span>
                 </div>
 
@@ -131,7 +129,7 @@ export const UtilityBar: React.FC = () => {
                     <Search className="w-3.5 h-3.5 absolute left-2.5 top-2 text-[#667784]" />
                     <input
                       type="text"
-                      placeholder="Search language / भाषा खोजें..."
+                      placeholder={`${t('search', language)}...`}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="w-full pl-8 pr-3 py-1 text-xs rounded-md border border-[#DDE6EC] focus:outline-none focus:border-[#123B5D] bg-white text-[#243746]"
@@ -170,7 +168,7 @@ export const UtilityBar: React.FC = () => {
                   })}
                   {filteredLanguages.length === 0 && (
                     <div className="p-4 text-center text-xs text-[#667784]">
-                      No languages match "{searchTerm}"
+                      {t('noResults', language)}: "{searchTerm}"
                     </div>
                   )}
                 </div>

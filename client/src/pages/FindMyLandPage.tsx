@@ -237,7 +237,7 @@ export const FindMyLandPage: React.FC = () => {
         {activeTab === 'gps' && (
           <div className="space-y-3 max-w-md text-xs text-[#667784]">
             <p>
-              GPS centroid: <strong>23.2625° N, 77.4150° E</strong> ({parcelVillagePrompt(language)}).
+              GPS centroid: <strong>23.2625° N, 77.4150° E</strong> ({t('parcelVillagePrompt', language)}).
             </p>
             <button
               onClick={() => navigate('/map')}
@@ -362,7 +362,3 @@ export const FindMyLandPage: React.FC = () => {
   );
 };
 
-function parcelVillagePrompt(lang: string) {
-  if (lang === 'hi') return 'रामपुर / भोपाल वृत्त';
-  return 'Rampur / Bhopal Circle';
-}

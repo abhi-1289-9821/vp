@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Sanskrit (संस्कृतम्) (sa) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const sa: TranslationSchema = {
+export const sa: Partial<TranslationSchema> = {
   appName: "सहाय (SAHAAY)",
   emblemLetter: "स",
   tagline: "भवतः भूमिः। भवतः अभियोगः। भवतः अधिकारः।",

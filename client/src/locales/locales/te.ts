@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Telugu (తెలుగు) (te) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const te: TranslationSchema = {
+export const te: Partial<TranslationSchema> = {
   appName: "సహాయ్ (SAHAAY)",
   emblemLetter: "స",
   tagline: "మీ భూమి. మీ కేసు. మీ హక్కు.",

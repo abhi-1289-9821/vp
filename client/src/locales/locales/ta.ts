@@ -4,7 +4,7 @@ import { TranslationSchema } from '../types.js';
  * Tamil (தமிழ்) (ta) Locale Dictionary for SAHAAY
  * 100% Complete Authentic Native Script Translation (493 Keys)
  */
-export const ta: TranslationSchema = {
+export const ta: Partial<TranslationSchema> = {
   appName: "சஹாய் (SAHAAY)",
   emblemLetter: "ச",
   tagline: "உங்கள் நிலம். உங்கள் வழக்கு. உங்கள் உரிமை.",
