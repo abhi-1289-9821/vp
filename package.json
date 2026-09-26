@@ -12,7 +12,7 @@
     "build:client": "npm --prefix client run build",
     "build": "npm run db:generate && npm run build:server && npm run build:client",
     "start": "node server/dist/index.js",
-    "test": "tsx server/src/test/run-tests.ts",
+    "test": "npm run db:generate && tsx server/src/test/run-tests.ts",
     "db:generate": "npm --prefix server run prisma:generate",
     "db:push": "npx prisma db push",
     "db:seed": "tsx prisma/seed.ts",
