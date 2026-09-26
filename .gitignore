@@ -43,3 +43,5 @@ Thumbs.db
 coverage/
 *.log
 .system_generated/
+
+*.zip
