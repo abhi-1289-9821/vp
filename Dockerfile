@@ -29,7 +29,7 @@ RUN npm run build:server
 RUN npm run build:client
 
 # Production runtime stage
-FROM node:22-alpine AS runner
+FROM node:22-slim AS runner
 
 WORKDIR /app
 
@@ -44,6 +44,7 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/server/package.json ./server/package.json
 
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /app/storage/documents
 
 EXPOSE 5000

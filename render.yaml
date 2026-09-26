@@ -5,8 +5,8 @@ services:
     region: ohio
     plan: free
     branch: main
-    buildCommand: npm install && npm --prefix server install && npx prisma generate && npm run build:server && npx prisma db push && npm run db:seed
-    startCommand: node server/dist/index.js
+    buildCommand: npm install && npm --prefix server install && npx prisma generate --schema=./prisma/schema.prisma && npm --prefix server run prisma:generate && npm run build:server
+    startCommand: npx prisma db push --schema=./prisma/schema.prisma --accept-data-loss && node server/dist/index.js
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
