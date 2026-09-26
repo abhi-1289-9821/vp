@@ -13,7 +13,8 @@ COPY prisma ./prisma
 RUN npm ci
 RUN npm --prefix server ci
 RUN npm --prefix client ci
-RUN npx prisma generate
+RUN npx prisma generate --schema=./prisma/schema.prisma
+RUN npm --prefix server run prisma:generate
 
 # Copy source code
 COPY server/tsconfig.json ./server/
@@ -47,4 +48,4 @@ RUN mkdir -p /app/storage/documents
 
 EXPOSE 5000
 
-CMD ["node", "server/dist/index.js"]
+CMD ["sh", "-c", "npx prisma generate --schema=./prisma/schema.prisma && npm --prefix server run prisma:generate && (npx prisma db push || true) && node server/dist/index.js"]
