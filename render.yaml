@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: sahaay-api
+    runtime: node
+    region: ohio
+    plan: free
+    branch: main
+    buildCommand: npm install && npm --prefix server install && npx prisma generate && npm run build:server && npx prisma db push && npm run db:seed
+    startCommand: node server/dist/index.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        sync: false
+      - key: AI_PROVIDER
+        value: mock
+      - key: STORAGE_PROVIDER
+        value: local
+      - key: STORAGE_PATH
+        value: ./storage
+      - key: MAX_FILE_SIZE_MB
+        value: 15
