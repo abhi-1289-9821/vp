@@ -19,6 +19,11 @@ import { GrievancePage } from './pages/GrievancePage.js';
 import { NotificationCenterPage } from './pages/NotificationCenterPage.js';
 import { OfficerDashboardPage } from './pages/OfficerDashboardPage.js';
 import { OfficerCasesPage } from './pages/OfficerCasesPage.js';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage.js';
+import { TermsAndConditionsPage } from './pages/TermsAndConditionsPage.js';
+import { AccessibilityPage } from './pages/AccessibilityPage.js';
+import { ContactUsPage } from './pages/ContactUsPage.js';
+import { FeedbackPage } from './pages/FeedbackPage.js';
 
 // Protected Route Guard for personalized data
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -118,6 +123,13 @@ export const App: React.FC = () => {
         <Route path="grievance" element={<GrievancePage />} />
         <Route path="grievance/new" element={<GrievancePage />} />
         <Route path="notifications" element={<NotificationCenterPage />} />
+
+        {/* GIGW Informational Routes */}
+        <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="terms-and-conditions" element={<TermsAndConditionsPage />} />
+        <Route path="accessibility" element={<AccessibilityPage />} />
+        <Route path="contact-us" element={<ContactUsPage />} />
+        <Route path="feedback" element={<FeedbackPage />} />
 
         {/* Officer Operational Routes */}
         <Route

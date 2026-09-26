@@ -822,5 +822,122 @@ export interface TranslationSchema {
   dashboardIdentityVerifiedSub: string;
   dashboardIdentityPendingSub: string;
   dashboardViewVerificationDetails: string;
+
+  // GIGW Informational Pages & Footer Links
+  footerPrivacyPolicy: string;
+  footerTermsConditions: string;
+  footerAccessibility: string;
+  footerContactUs: string;
+  footerFeedback: string;
+  footerGIGWCompliance: string;
+
+  // Privacy Policy Page
+  privacyTitle: string;
+  privacySubtitle: string;
+  privacyLastUpdated: string;
+  privacyDemoNotice: string;
+  privacySec1Title: string;
+  privacySec1Body: string;
+  privacySec2Title: string;
+  privacySec2Body: string;
+  privacySec3Title: string;
+  privacySec3Body: string;
+  privacySec4Title: string;
+  privacySec4Body: string;
+  privacySec5Title: string;
+  privacySec5Body: string;
+  privacySec6Title: string;
+  privacySec6Body: string;
+
+  // Terms & Conditions Page
+  termsTitle: string;
+  termsSubtitle: string;
+  termsLastUpdated: string;
+  termsSec1Title: string;
+  termsSec1Body: string;
+  termsSec2Title: string;
+  termsSec2Body: string;
+  termsSec3Title: string;
+  termsSec3Body: string;
+  termsSec4Title: string;
+  termsSec4Body: string;
+  termsSec5Title: string;
+  termsSec5Body: string;
+  termsSec6Title: string;
+  termsSec6Body: string;
+  termsSec7Title: string;
+  termsSec7Body: string;
+
+  // Accessibility Statement Page
+  accessTitle: string;
+  accessSubtitle: string;
+  accessCommitmentTitle: string;
+  accessCommitmentBody: string;
+  accessFeature1Title: string;
+  accessFeature1Body: string;
+  accessFeature2Title: string;
+  accessFeature2Body: string;
+  accessFeature3Title: string;
+  accessFeature3Body: string;
+  accessFeature4Title: string;
+  accessFeature4Body: string;
+  accessFeature5Title: string;
+  accessFeature5Body: string;
+  accessHelpTitle: string;
+  accessHelpBody: string;
+
+  // Contact Us Page
+  contactTitle: string;
+  contactSubtitle: string;
+  contactDirectoryTitle: string;
+  contactHelpdeskTitle: string;
+  contactTollFree: string;
+  contactTiming: string;
+  contactHQ: string;
+  contactHQAddress: string;
+  contactEmailSupport: string;
+  contactEmailGrievance: string;
+  contactEmailRTI: string;
+  contactFormTitle: string;
+  contactFormDesc: string;
+  contactCategoryLabel: string;
+  contactNameLabel: string;
+  contactPhoneLabel: string;
+  contactEmailLabel: string;
+  contactRefLabel: string;
+  contactSubjectLabel: string;
+  contactMessageLabel: string;
+  contactSubmitBtn: string;
+  contactSuccessToast: string;
+  contactDemoNotice: string;
+
+  // Feedback Page
+  feedbackTitle: string;
+  feedbackSubtitle: string;
+  feedbackFormTitle: string;
+  feedbackFormDesc: string;
+  feedbackUserTypeLabel: string;
+  feedbackUserTypeLandowner: string;
+  feedbackUserTypeAdvocate: string;
+  feedbackUserTypeOfficial: string;
+  feedbackUserTypePublic: string;
+  feedbackTopicLabel: string;
+  feedbackTopicLandSearch: string;
+  feedbackTopicDocIntel: string;
+  feedbackTopicGis: string;
+  feedbackTopicCompensation: string;
+  feedbackTopicGrievance: string;
+  feedbackTopicLanguages: string;
+  feedbackRatingLabel: string;
+  feedbackClarityRatingLabel: string;
+  feedbackEaseRatingLabel: string;
+  feedbackCommentsLabel: string;
+  feedbackRecommendLabel: string;
+  feedbackYes: string;
+  feedbackNo: string;
+  feedbackSubmitBtn: string;
+  feedbackSuccessToast: string;
+  feedbackDemoNotice: string;
 }
+
 

@@ -126,8 +126,45 @@ export const Footer: React.FC = () => {
               <Mail className="w-4 h-4 text-[#E8B84A] shrink-0" />
               <span>{t('footerEmail', language)}</span>
             </div>
+            <div className="pt-2 border-t border-[#1B4D78] flex items-center space-x-3 text-[11px]">
+              <Link to="/contact-us" className="text-[#E8B84A] hover:underline font-medium">
+                {t('footerContactUs', language)} →
+              </Link>
+              <span className="text-slate-500">•</span>
+              <Link to="/feedback" className="text-[#E8B84A] hover:underline font-medium">
+                {t('footerFeedback', language)} →
+              </Link>
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* GIGW Policy & Compliance Link Bar */}
+      <div className="border-t border-[#1B4D78] bg-[#0E3352]/70 py-2.5">
+        <nav
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs text-slate-300"
+          aria-label="Statutory and Policy Navigation"
+        >
+          <Link to="/privacy-policy" className="hover:text-[#E8B84A] transition">
+            {t('footerPrivacyPolicy', language)}
+          </Link>
+          <span className="text-slate-500 hidden sm:inline">•</span>
+          <Link to="/terms-and-conditions" className="hover:text-[#E8B84A] transition">
+            {t('footerTermsConditions', language)}
+          </Link>
+          <span className="text-slate-500 hidden sm:inline">•</span>
+          <Link to="/accessibility" className="hover:text-[#E8B84A] transition">
+            {t('footerAccessibility', language)}
+          </Link>
+          <span className="text-slate-500 hidden sm:inline">•</span>
+          <Link to="/contact-us" className="hover:text-[#E8B84A] transition">
+            {t('footerContactUs', language)}
+          </Link>
+          <span className="text-slate-500 hidden sm:inline">•</span>
+          <Link to="/feedback" className="hover:text-[#E8B84A] transition">
+            {t('footerFeedback', language)}
+          </Link>
+        </nav>
       </div>
 
       {/* Bottom Compliance & Disclaimer Bar */}
