@@ -9,35 +9,12 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
-  const { user, logout, language, setLanguage, setAuth } = useAuthStore();
+  const { user, logout, language, setLanguage } = useAuthStore();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'hi' : 'en');
-  };
-
-  const switchDemoRole = async (role: 'CITIZEN' | 'OFFICER') => {
-    const email = role === 'CITIZEN' ? 'citizen@sahaay.demo' : 'officer@sahaay.demo';
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: 'password123' }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setAuth(data.data.token, data.data.user);
-        setShowUserMenu(false);
-        if (role === 'OFFICER') {
-          navigate('/officer');
-        } else {
-          navigate('/');
-        }
-      }
-    } catch (err) {
-      console.error('Failed to switch role', err);
-    }
   };
 
   return (
@@ -132,41 +109,19 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                     <div className="px-4 py-2 border-b border-slate-100">
                       <p className="text-xs font-bold text-slate-900">{user.name}</p>
                       <p className="text-[11px] text-slate-500 truncate">{user.email}</p>
-                      <span className="inline-block mt-1 text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
-                        {user.role === 'OFFICER' ? t('landOfficer', language) : t('landowner', language)}
-                      </span>
-                    </div>
-
-                    {/* Fast Demo Role Switcher */}
-                    <div className="px-3 py-2 border-b border-slate-100 bg-slate-50/70">
-                      <span className="text-[10px] font-bold uppercase text-slate-400 block mb-1.5">
-                        {t('switchRole', language)}
-                      </span>
-                      <div className="grid grid-cols-2 gap-1.5">
-                        <button
-                          onClick={() => switchDemoRole('CITIZEN')}
-                          className={`text-xs py-1.5 px-2 rounded-lg font-medium transition text-center cursor-pointer ${
-                            user.role === 'CITIZEN'
-                              ? 'bg-blue-900 text-white font-semibold'
-                              : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
-                          }`}
-                        >
-                          {t('landowner', language)}
-                        </button>
-                        <button
-                          onClick={() => switchDemoRole('OFFICER')}
-                          className={`text-xs py-1.5 px-2 rounded-lg font-medium transition text-center cursor-pointer ${
-                            user.role === 'OFFICER'
-                              ? 'bg-blue-900 text-white font-semibold'
-                              : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
-                          }`}
-                        >
-                          {t('landOfficer', language)}
-                        </button>
+                      <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                        <span className="inline-block text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                          {user.role === 'OFFICER' ? t('landOfficer', language) : t('landowner', language)}
+                        </span>
+                        {user.profile?.panStatus === 'VERIFIED' && (
+                          <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-800">
+                            ✓ Verified
+                          </span>
+                        )}
                       </div>
                     </div>
 
-                    <div className="py-1">
+                    <div className="py-1 border-b border-slate-100 space-y-0.5">
                       {user.role === 'OFFICER' ? (
                         <Link
                           to="/officer"
@@ -195,7 +150,9 @@ export const Header: React.FC<HeaderProps> = ({ unreadCount = 0 }) => {
                         <FileSearch className="w-4 h-4 text-amber-600" />
                         <span>{t('findMyLand', language)}</span>
                       </Link>
+                    </div>
 
+                    <div className="py-1">
                       <button
                         onClick={() => {
                           logout();

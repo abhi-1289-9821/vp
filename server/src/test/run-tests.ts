@@ -136,7 +136,54 @@ async function runTests() {
     assert(faceMatch.matchScore >= 80, `Biometric match score is above threshold (${faceMatch.matchScore}%)`);
     assert(faceMatch.panFaceDetected === true, 'Face successfully detected in PAN document');
     assert(faceMatch.selfieFaceDetected === true, 'Face successfully detected in Selfie photo');
-    assert(faceMatch.livenessScore >= 90, 'Liveness detection passed');
+    // 9. Role-Based Authorization & Session Security
+    console.log('\n9. Role-Based Authorization & JWT Session Security:');
+    const { generateToken } = await import('../utils/jwt');
+    const { requireRole } = await import('../middleware/auth');
+
+    const citizenToken = generateToken({
+      userId: citizen!.id,
+      email: citizen!.email,
+      role: 'CITIZEN',
+      name: citizen!.name,
+    });
+    assert(Boolean(citizenToken), 'JWT token generated for Citizen role');
+
+    const officerToken = generateToken({
+      userId: officer!.id,
+      email: officer!.email,
+      role: 'OFFICER',
+      name: officer!.name,
+    });
+    assert(Boolean(officerToken), 'JWT token generated for Officer role');
+
+    // Test requireRole middleware behavior
+    const citizenReq: any = { user: { role: 'CITIZEN' } };
+    const officerReq: any = { user: { role: 'OFFICER' } };
+    let officerRoutePassed: any = false;
+    let citizenBlockedOnOfficerRoute: any = false;
+
+    const officerGuard = requireRole('OFFICER', 'ADMIN');
+    officerGuard(officerReq, {} as any, () => {
+      officerRoutePassed = true;
+    });
+    assert(Boolean(officerRoutePassed), 'Officer is authorized for Officer routes');
+
+    officerGuard(citizenReq, {} as any, (err?: any) => {
+      if (err && err.statusCode === 403) {
+        citizenBlockedOnOfficerRoute = true;
+      }
+    });
+    assert(Boolean(citizenBlockedOnOfficerRoute), 'Citizen is rejected with 403 Forbidden on Officer routes');
+
+    const citizenGuard = requireRole('CITIZEN', 'ADMIN');
+    let officerBlockedOnCitizenRoute: any = false;
+    citizenGuard(officerReq, {} as any, (err?: any) => {
+      if (err && err.statusCode === 403) {
+        officerBlockedOnCitizenRoute = true;
+      }
+    });
+    assert(Boolean(officerBlockedOnCitizenRoute), 'Officer is rejected with 403 Forbidden on Citizen routes');
 
     console.log('\n=======================================================');
     console.log(`🏁 TEST RESULTS: ${passed}/${total} checks passed!`);

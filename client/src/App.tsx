@@ -29,7 +29,17 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   return <>{children}</>;
 };
 
-// Officer Route Guard
+// Citizen Route Guard (Citizen or Admin only)
+const CitizenRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { token, user } = useAuthStore();
+  if (!token) return <Navigate to="/login" replace />;
+  if (user?.role === 'OFFICER') {
+    return <Navigate to="/officer" replace />;
+  }
+  return <>{children}</>;
+};
+
+// Officer Route Guard (Officer or Admin only)
 const OfficerRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { token, user } = useAuthStore();
   if (!token) return <Navigate to="/login" replace />;
@@ -56,16 +66,29 @@ export const App: React.FC = () => {
 
       {/* Main Application Layout Shell */}
       <Route path="/" element={<Layout />}>
-        <Route index element={token && user ? <CitizenHomePage /> : <PublicLandingPage />} />
+        <Route
+          index
+          element={
+            token && user ? (
+              user.role === 'OFFICER' ? (
+                <Navigate to="/officer" replace />
+              ) : (
+                <CitizenHomePage />
+              )
+            ) : (
+              <PublicLandingPage />
+            )
+          }
+        />
         <Route path="find-land" element={<FindMyLandPage />} />
         <Route path="map" element={<MyLandGISPage />} />
         <Route path="documents/analyze" element={<DocumentIntelligencePage />} />
         <Route
           path="documents"
           element={
-            <ProtectedRoute>
+            <CitizenRoute>
               <DocumentLockerPage />
-            </ProtectedRoute>
+            </CitizenRoute>
           }
         />
         <Route
@@ -76,8 +99,22 @@ export const App: React.FC = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="compensation" element={<CompensationRRPage />} />
-        <Route path="actions" element={<ActionCenterPage />} />
+        <Route
+          path="compensation"
+          element={
+            <CitizenRoute>
+              <CompensationRRPage />
+            </CitizenRoute>
+          }
+        />
+        <Route
+          path="actions"
+          element={
+            <CitizenRoute>
+              <ActionCenterPage />
+            </CitizenRoute>
+          }
+        />
         <Route path="grievance" element={<GrievancePage />} />
         <Route path="grievance/new" element={<GrievancePage />} />
         <Route path="notifications" element={<NotificationCenterPage />} />

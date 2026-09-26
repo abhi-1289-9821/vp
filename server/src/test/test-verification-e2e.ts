@@ -22,7 +22,7 @@ async function testE2E() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'citizen@sahaay.demo', password: 'password123' }),
     });
-    const loginData = await loginRes.json();
+    const loginData = (await loginRes.json()) as any;
     console.log(`   Status: ${loginRes.status}, Success: ${loginData.success}`);
     console.log(`   User: ${loginData.data?.user?.name} (${loginData.data?.user?.role})`);
     console.log(`   PAN: ${loginData.data?.user?.profile?.panNumber}, Status: ${loginData.data?.user?.profile?.panStatus}`);
@@ -38,7 +38,7 @@ async function testE2E() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ panNumber: 'ABCDE1234F' }),
     });
-    const panData1 = await panRes1.json();
+    const panData1 = (await panRes1.json()) as any;
     console.log(`   Valid PAN (ABCDE1234F): Valid=${panData1.data?.valid}, Entity=${panData1.data?.entityType}`);
 
     const panRes2 = await fetch(`${baseUrl}/auth/verify-pan`, {
@@ -46,7 +46,7 @@ async function testE2E() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ panNumber: 'INVALID_PAN_123' }),
     });
-    const panData2 = await panRes2.json();
+    const panData2 = (await panRes2.json()) as any;
     console.log(`   Invalid PAN: Valid=${panData2.data?.valid}, Message=${panData2.data?.message}`);
 
     if (!panData1.data?.valid || panData2.data?.valid) {
@@ -64,7 +64,7 @@ async function testE2E() {
         panNumber: 'ABCPS1234K',
       }),
     });
-    const faceData = await faceRes.json();
+    const faceData = (await faceRes.json()) as any;
     console.log(`   Face Verification: Status=${faceData.data?.status}, MatchScore=${faceData.data?.matchScore}%, IsMatch=${faceData.data?.isMatch}`);
     console.log(`   Landmark Alignment: ${faceData.data?.details?.landmarkAlignmentScore}%, Liveness: ${faceData.data?.livenessScore}%`);
     if (!faceData.success || faceData.data?.status !== 'VERIFIED') {
@@ -92,7 +92,7 @@ async function testE2E() {
         faceMatchStatus: 'VERIFIED',
       }),
     });
-    const regData = await regRes.json();
+    const regData = (await regRes.json()) as any;
     console.log(`   Registration: Success=${regData.success}, Token Generated=${Boolean(regData.data?.token)}`);
     console.log(`   Registered Profile: Name=${regData.data?.user?.name}, PAN=${regData.data?.user?.profile?.panNumber}, PAN Status=${regData.data?.user?.profile?.panStatus}`);
     console.log(`   Biometric Match: ${regData.data?.user?.profile?.faceMatchScore}%, Status=${regData.data?.user?.profile?.faceMatchStatus}`);
@@ -106,7 +106,7 @@ async function testE2E() {
     const dashRes = await fetch(`${baseUrl}/citizen/dashboard`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    const dashData = await dashRes.json();
+    const dashData = (await dashRes.json()) as any;
     console.log(`   Dashboard: Success=${dashData.success}, Citizen=${dashData.data?.citizen?.name}, District=${dashData.data?.citizen?.district}`);
 
     console.log('\n=======================================================');

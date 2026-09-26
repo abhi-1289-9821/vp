@@ -17,32 +17,9 @@ import {
 import { t } from '../../lib/i18n.js';
 
 export const SahaayBrandHeader: React.FC = () => {
-  const { user, logout, language, setAuth } = useAuthStore();
+  const { user, logout, language } = useAuthStore();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
-
-  const switchDemoRole = async (role: 'CITIZEN' | 'OFFICER') => {
-    const email = role === 'CITIZEN' ? 'citizen@sahaay.demo' : 'officer@sahaay.demo';
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: 'password123' }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setAuth(data.data.token, data.data.user);
-        setShowUserMenu(false);
-        if (role === 'OFFICER') {
-          navigate('/officer');
-        } else {
-          navigate('/');
-        }
-      }
-    } catch (err) {
-      console.error('Failed to switch role', err);
-    }
-  };
 
   return (
     <div className="bg-white border-b border-[#E5E0D8] py-3.5 sm:py-4">
@@ -96,7 +73,7 @@ export const SahaayBrandHeader: React.FC = () => {
             <span>{t('understandDocument', language)}</span>
           </Link>
 
-          {/* User Account / Demo Switcher Menu OR Prominent Sign In Button */}
+          {/* User Account / Profile Menu OR Prominent Sign In Button */}
           {user ? (
             <div className="relative">
               <button
@@ -117,52 +94,64 @@ export const SahaayBrandHeader: React.FC = () => {
                 <ChevronDown className="w-3.5 h-3.5 text-[#6B5E57]" />
               </button>
 
-              {/* Dropdown Menu */}
+              {/* Secure User Profile Dropdown Menu */}
               {showUserMenu && (
                 <div className="absolute right-0 mt-2 w-64 bg-white border border-[#E5E0D8] rounded-xl shadow-lg py-2 z-50 animate-in fade-in duration-150">
+                  {/* Account Header */}
                   <div className="px-3.5 py-2 border-b border-[#E5E0D8] bg-[#FDFBF7]">
                     <div className="text-xs font-bold text-[#2D1810]">{user.name}</div>
                     <div className="text-[11px] text-[#6B5E57] truncate">{user.email}</div>
-                    <div className="mt-1 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#ECFDF5] text-[#047857] border border-[#047857]/20">
-                      {t('status', language)}: {user.role === 'OFFICER' ? t('landOfficer', language) : t('landowner', language)}
+                    <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#ECFDF5] text-[#047857] border border-[#047857]/20">
+                        {user.role === 'OFFICER' ? t('landOfficer', language) : t('landowner', language)}
+                      </span>
+                      {user.profile?.panStatus === 'VERIFIED' && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#E8F5E9] text-[#047857] border border-[#047857]/30">
+                          ✓ Verified
+                        </span>
+                      )}
                     </div>
                   </div>
 
-                  {/* 1-Click Persona Switcher */}
-                  <div className="p-2 border-b border-[#E5E0D8] space-y-1">
-                    <span className="text-[10px] uppercase tracking-wider font-bold text-[#6B5E57] px-2 block">
-                      {t('switchRole', language)}
-                    </span>
-                    <button
-                      onClick={() => switchDemoRole('CITIZEN')}
-                      className={`w-full text-left px-2.5 py-1.5 text-xs rounded-lg flex items-center justify-between cursor-pointer transition ${
-                        user.role === 'CITIZEN'
-                          ? 'bg-[#ECFDF5] text-[#047857] font-bold'
-                          : 'text-[#2D1810] hover:bg-[#FDFBF7] font-medium'
-                      }`}
+                  {/* Navigation Links */}
+                  <div className="p-1 border-b border-[#E5E0D8] space-y-0.5">
+                    {user.role === 'OFFICER' ? (
+                      <Link
+                        to="/officer"
+                        onClick={() => setShowUserMenu(false)}
+                        className="w-full text-left px-3 py-1.5 text-xs text-[#2D1810] hover:bg-[#FDFBF7] rounded-lg flex items-center space-x-2 font-medium"
+                      >
+                        <Building className="w-3.5 h-3.5 text-[#047857]" />
+                        <span>{t('navOfficerDashboard', language)}</span>
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/"
+                        onClick={() => setShowUserMenu(false)}
+                        className="w-full text-left px-3 py-1.5 text-xs text-[#2D1810] hover:bg-[#FDFBF7] rounded-lg flex items-center space-x-2 font-medium"
+                      >
+                        <User className="w-3.5 h-3.5 text-[#047857]" />
+                        <span>{t('navHome', language)}</span>
+                      </Link>
+                    )}
+
+                    <Link
+                      to="/find-land"
+                      onClick={() => setShowUserMenu(false)}
+                      className="w-full text-left px-3 py-1.5 text-xs text-[#2D1810] hover:bg-[#FDFBF7] rounded-lg flex items-center space-x-2 font-medium"
                     >
-                      <span>🌾 {t('switchCitizen', language)}</span>
-                      {user.role === 'CITIZEN' && <span className="text-[10px] text-[#047857] font-bold">{t('active', language)}</span>}
-                    </button>
-                    <button
-                      onClick={() => switchDemoRole('OFFICER')}
-                      className={`w-full text-left px-2.5 py-1.5 text-xs rounded-lg flex items-center justify-between cursor-pointer transition ${
-                        user.role === 'OFFICER'
-                          ? 'bg-[#ECFDF5] text-[#047857] font-bold'
-                          : 'text-[#2D1810] hover:bg-[#FDFBF7] font-medium'
-                      }`}
-                    >
-                      <span>🏛️ {t('switchOfficer', language)}</span>
-                      {user.role === 'OFFICER' && <span className="text-[10px] text-[#047857] font-bold">{t('active', language)}</span>}
-                    </button>
+                      <FileSearch className="w-3.5 h-3.5 text-[#D97706]" />
+                      <span>{t('findMyLand', language)}</span>
+                    </Link>
                   </div>
 
+                  {/* Sign Out */}
                   <div className="p-1">
                     <button
                       onClick={() => {
                         setShowUserMenu(false);
                         logout();
-                        navigate('/');
+                        navigate('/login');
                       }}
                       className="w-full text-left px-3 py-1.5 text-xs text-[#B91C1C] hover:bg-[#FEF2F2] rounded-lg flex items-center space-x-2 font-semibold cursor-pointer"
                     >
