@@ -1,5 +1,5 @@
 # SAHAAY Full-Stack Production Container
-FROM node:22-alpine AS builder
+FROM node:22-slim AS builder
 
 WORKDIR /app
 
@@ -9,7 +9,8 @@ COPY server/package.json server/package-lock.json ./server/
 COPY client/package.json client/package-lock.json ./client/
 COPY prisma ./prisma
 
-# Install all dependencies and generate Prisma Client
+# Install dependencies and generate Prisma Client
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 RUN npm ci
 RUN npm --prefix server ci
 RUN npm --prefix client ci
@@ -49,4 +50,4 @@ RUN mkdir -p /app/storage/documents
 
 EXPOSE 5000
 
-CMD ["sh", "-c", "npx prisma generate --schema=./prisma/schema.prisma && npm --prefix server run prisma:generate && (npx prisma db push || true) && node server/dist/index.js"]
+CMD ["sh", "-c", "npx prisma generate --schema=./prisma/schema.prisma && cp -r node_modules/.prisma server/node_modules/ && (npx prisma db push --schema=./prisma/schema.prisma || true) && node server/dist/index.js"]
